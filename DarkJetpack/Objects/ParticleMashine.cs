@@ -28,7 +28,7 @@ namespace DarkJetpack {
             texture = _texture;
             sourceRect = sourceRectangle;
         }
-        public virtual void update() {
+        public void update() {
 
         }
         public void draw(SpriteBatch sB) {
