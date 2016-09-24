@@ -9,7 +9,7 @@ namespace DarkJetpack {
         SpriteBatch spriteBatch;
         public static Texture2D baseTexture;
         Layout curLayout;
-
+        public Color backColor;
         Stack<Layout> layoutBackStack;
 
         public DarkJetpack() : base() {
@@ -33,6 +33,8 @@ namespace DarkJetpack {
             baseTexture.SetData(new Color[] { Color.White });
 
             curLayout = new MainMenuLayout(this);
+
+            backColor = new Color(76, 220, 241);
         }
 
         protected override void UnloadContent() {
@@ -56,7 +58,7 @@ namespace DarkJetpack {
         }
 
         protected override void Draw(GameTime gameTime) {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(backColor);
 
             spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
 

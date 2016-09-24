@@ -9,28 +9,30 @@ namespace DarkJetpack {
         public struct Particle {
             public Vector2 p;
             public Vector2 v;
+            public Color c;
+            public int s;
             public float l;
-            public Particle(Vector2 pos, Vector2 vel, float lif) { p = pos; v = vel; l = lif; }
+            public Particle(Vector2 pos, Vector2 vel, int siz, float lif, Color col) { p = pos; v = vel; s = siz; l = lif; c = col; }
         };
         public List<Particle> particles;
         Texture2D texture;
+        Rectangle? sourceRect;
         public int count;
-        private int size;
-        public ParticleMashine(int _count, int _size, Texture2D _texture) {
+        public ParticleMashine(int _count, Texture2D _texture, Rectangle? sourceRectangle) {
             count = _count;
             particles = new List<Particle>();
             for (int i = 0; i < count; i++) {
-                particles.Add(new Particle(Vector2.Zero, Vector2.Zero, 0));
+                particles.Add(new Particle(Vector2.Zero, Vector2.Zero, 0, 0, Color.White));
             }
             texture = _texture;
-            size = _size;
+            sourceRect = sourceRectangle;
         }
         public void update() {
 
         }
         public void draw(SpriteBatch sB) {
             foreach (Particle p in particles) {
-                sB.Draw(texture, new Rectangle((int)p.p.X - size, (int)p.p.Y - size, size, size), Color.White);
+                sB.Draw(texture, new Rectangle((int)p.p.X - p.s, (int)p.p.Y - p.s, p.s, p.s), sourceRect, p.c);
             }
         }
     }

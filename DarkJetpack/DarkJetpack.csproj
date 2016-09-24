@@ -44,6 +44,7 @@
     <Compile Include="Layouts\Layout.cs" />
     <Compile Include="Layouts\GameLayout.cs" />
     <Compile Include="Layouts\MainMenuLayout.cs" />
+    <Compile Include="Objects\Cities.cs" />
     <Compile Include="Objects\Background.cs" />
     <Compile Include="DarkJetpack.cs" />
     <Compile Include="Objects\ParticleMashine.cs" />
