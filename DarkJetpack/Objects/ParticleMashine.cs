@@ -18,6 +18,7 @@ namespace DarkJetpack {
         Texture2D texture;
         Rectangle? sourceRect;
         public int count;
+
         public ParticleMashine(int _count, Texture2D _texture, Rectangle? sourceRectangle) {
             count = _count;
             particles = new List<Particle>();
@@ -27,7 +28,7 @@ namespace DarkJetpack {
             texture = _texture;
             sourceRect = sourceRectangle;
         }
-        public void update() {
+        public virtual void update() {
 
         }
         public void draw(SpriteBatch sB) {

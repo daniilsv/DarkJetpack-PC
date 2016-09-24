@@ -8,9 +8,9 @@ namespace DarkJetpack {
     class MainMenuLayout : Layout {
         Texture2D interferenceTexture;
         double lastTime = 0;
-        private ParticleMashine pm;
+        private ParticleMashine particleMashine;
         public MainMenuLayout(DarkJetpack _game) : base(_game) {
-            pm = new ParticleMashine(50, DarkJetpack.baseTexture, null);
+            particleMashine = new ParticleMashine(50, DarkJetpack.baseTexture, null);
             interferenceTexture = new Texture2D(game.GraphicsDevice, 200, 150);
         }
 
@@ -25,8 +25,8 @@ namespace DarkJetpack {
 
             #region Particle Mashine
             Random r = new Random();
-            for (int i = 0; i < pm.count; i++) {
-                ParticleMashine.Particle p = pm.particles[i];
+            for (int i = 0; i < particleMashine.count; i++) {
+                ParticleMashine.Particle p = particleMashine.particles[i];
                 if (p.l <= 0.1) {
                     p.p.X = msState.X;
                     p.p.Y = msState.Y;
@@ -38,7 +38,7 @@ namespace DarkJetpack {
                 p.v.Y = 2 + 2.0f * (float)r.NextDouble();
                 p.l -= 0.8f * (float)r.NextDouble();
                 p.c = new Color(p.l, (float)Math.Sin(p.l), (float)Math.Cos(p.l));
-                pm.particles[i] = p;
+                particleMashine.particles[i] = p;
             }
             #endregion
 
@@ -68,7 +68,7 @@ namespace DarkJetpack {
             }
         }
         public override void draw(SpriteBatch spriteBatch, GameTime gameTime) {
-            pm.draw(spriteBatch);
+            particleMashine.draw(spriteBatch);
             spriteBatch.Draw(interferenceTexture, new Rectangle(200, 200, 200, 150), Color.White);
         }
     }

@@ -53,24 +53,21 @@ namespace DarkJetpack {
             else if (kbState.IsKeyDown(Keys.Right))
                 direction += new Vector2(1, 0);
 
-            if (kbState.IsKeyDown(Keys.F11)) {
-                game.graphics.IsFullScreen = !game.graphics.IsFullScreen;
-                game.graphics.ApplyChanges();
-            }
+            player.Update(gameTime, direction, viewport);
+            score = Math.Max(score, -(int)player.Position.Y);
+
+            #region Background
+            foreach (Background bg in Backgrounds)
+                bg.Update(gameTime, direction, viewport, (1 + player.Position.Y / 5));
 
             cities.Update(gameTime, direction, viewport);
-
-            player.Update(gameTime, direction, viewport);
-
-            foreach (Background bg in Backgrounds)
-                bg.Update(gameTime, direction, viewport, (1 + player.Position.Y / 2));
-
             cities.Offset.Y = -player.Position.Y * 50;
-            score = Math.Max(score, -(int)player.Position.Y);
+
             game.backColor = new Color(
                 (int)(76 * (1 + player.Position.Y / 15)),
-                (int)(220 * (1 + player.Position.Y / 2)),
-                (int)(241 * (1 + player.Position.Y / 2)));
+                (int)(220 * (1 + player.Position.Y / 15)),
+                (int)(241 * (1 + player.Position.Y / 15)));
+            #endregion
 
         }
 

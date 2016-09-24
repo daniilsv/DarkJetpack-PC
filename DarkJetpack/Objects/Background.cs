@@ -26,22 +26,14 @@ namespace DarkJetpack {
         }
         public void Update(GameTime gametime, Vector2 direction, Viewport viewport, float _alpha) {
             float elapsed = (float)gametime.ElapsedGameTime.TotalSeconds;
-
-            //Store the viewport
             Viewport = viewport;
-
-            //Calculate the distance to move our image, based on speed
             Vector2 distance = direction * Speed * elapsed;
-
-            //Update our offset
             Offset += distance;
             alpha = _alpha;
         }
 
         public void Draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(Texture, new Vector2(Viewport.X, Viewport.Y), Rectangle,
-                new Color(255 * alpha, 255 * alpha, 255 * alpha, alpha),
-                0, Vector2.Zero, Zoom, SpriteEffects.None, 1);
+            spriteBatch.Draw(Texture, new Vector2(Viewport.X, Viewport.Y), Rectangle, Color.White * alpha, 0, Vector2.Zero, Zoom, SpriteEffects.None, 1);
         }
     }
 }

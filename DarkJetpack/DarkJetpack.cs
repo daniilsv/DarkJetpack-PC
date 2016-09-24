@@ -47,6 +47,11 @@ namespace DarkJetpack {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kbState.IsKeyDown(Keys.Escape))
                 Exit();
 
+            if (kbState.IsKeyDown(Keys.F11)) {
+                graphics.IsFullScreen = !graphics.IsFullScreen;
+                graphics.ApplyChanges();
+            }
+
             curLayout.onUpdate(gameTime, GraphicsDevice.Viewport);
             base.Update(gameTime);
         }
@@ -60,7 +65,7 @@ namespace DarkJetpack {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(backColor);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.LinearWrap, null, null);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, null, null);
 
             curLayout.onDraw(spriteBatch, gameTime);
             spriteBatch.End();

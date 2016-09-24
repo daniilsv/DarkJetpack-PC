@@ -22,10 +22,10 @@ namespace DarkJetpack {
         public virtual void update(GameTime gameTime) { }
         public void onUpdate(GameTime gameTime, Viewport _viewport) {
             viewport = _viewport;
-
             update(gameTime);
 
             MouseState msState = Mouse.GetState();
+            #region Buttons
             foreach (Button b in buttons) {
                 if (b.b.Contains(msState.X, msState.Y)) {
                     b.is_active = true;
@@ -36,10 +36,10 @@ namespace DarkJetpack {
                     b.is_active = false;
                 b.onUpdate();
             }
+            #endregion
             oldMsState = msState;
 
             KeyboardState kbState = Keyboard.GetState();
-
             oldKbState = kbState;
         }
 
