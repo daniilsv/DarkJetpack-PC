@@ -9,13 +9,15 @@ namespace DarkJetpack {
         Texture2D interferenceTexture;
         double lastTime = 0;
         private ParticleMashine particleMashine;
+        Window testw;
         public MainMenuLayout(DarkJetpack _game) : base(_game) {
             particleMashine = new ParticleMashine(50, DarkJetpack.baseTexture, null);
             interferenceTexture = new Texture2D(game.GraphicsDevice, 200, 150);
         }
 
         public override void onLoad() {
-            addButton(new Rectangle(100, 100, 200, 50), DarkJetpack.baseTexture, null, (() => game.changeLayoutTo(new GameLayout(game))));
+            testw = new Window(new Rectangle(100, 100, windowBounds.X - 200, windowBounds.Y - 200), game.Terrain);
+            addButton(new Rectangle(windowBounds.X / 2 - 100, windowBounds.Y - 200, 200, 50), game.Terrain, new Rectangle(429, 321, 123, 41), (() => game.changeLayoutTo(new GameLayout(game))));
 
         }
         public override void onUnLoad() {
@@ -68,8 +70,9 @@ namespace DarkJetpack {
             }
         }
         public override void draw(SpriteBatch spriteBatch, GameTime gameTime) {
+            testw.onDraw(spriteBatch, gameTime);
             particleMashine.draw(spriteBatch);
-            spriteBatch.Draw(interferenceTexture, new Rectangle(200, 200, 200, 150), Color.White);
+            //spriteBatch.Draw(interferenceTexture, new Rectangle(200, 200, 200, 150), Color.White);
         }
     }
 }

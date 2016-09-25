@@ -17,7 +17,7 @@ namespace DarkJetpack {
         private Rectangle Rectangle {
             get { return new Rectangle((int)(Offset.X), (int)(Offset.Y), (int)(Viewport.Width / Zoom), (int)(Viewport.Height / Zoom)); }
         }
-
+            
         public Background(Texture2D texture, Vector2 speed, float zoom) {
             Texture = texture;
             Offset = Vector2.Zero;

@@ -6,7 +6,6 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DarkJetpack {
     class GameLayout : Layout {
-        private Texture2D Terrain;
         List<Background> Backgrounds;
         Player player;
         int score;
@@ -19,13 +18,12 @@ namespace DarkJetpack {
             oldKbState = Keyboard.GetState();
 
             Backgrounds = new List<Background>();
-            Terrain = game.Content.Load<Texture2D>(@"Terrain");
             Backgrounds.Add(new Background(game.Content.Load<Texture2D>(@"Clouds1"), new Vector2(300, 300), 0.6f));
             Backgrounds.Add(new Background(game.Content.Load<Texture2D>(@"Clouds2"), new Vector2(500, 500), 0.8f));
             Backgrounds.Add(new Background(game.Content.Load<Texture2D>(@"Clouds3"), new Vector2(700, 700), 1.1f));
             scoreFont = game.Content.Load<SpriteFont>(@"ScoreFont");
-            player = new Player(game, Terrain);
-            cities = new Cities(Terrain);
+            player = new Player(game, game.Terrain);
+            cities = new Cities(game.Terrain);
         }
 
         public override void onUnLoad() {
@@ -40,11 +38,10 @@ namespace DarkJetpack {
             } else if (oldKbState.IsKeyDown(Keys.Space)) {
 
             }
-
             Vector2 direction = Vector2.Zero;
             if (kbState.IsKeyDown(Keys.Up))
                 direction = new Vector2(0, -1);
-            else if (kbState.IsKeyDown(Keys.Down) && player.Position.Y <= 0) {
+            else if (kbState.IsKeyDown(Keys.Down) && player.Position.Y >= 0) {
                 direction = new Vector2(0, 1);
             }
 
@@ -53,20 +50,24 @@ namespace DarkJetpack {
             else if (kbState.IsKeyDown(Keys.Right))
                 direction += new Vector2(1, 0);
 
+            if (kbState.IsKeyDown(Keys.LeftShift))
+                direction *= 3;
+
             player.Update(gameTime, direction, viewport);
-            score = Math.Max(score, -(int)player.Position.Y);
+            score = Math.Max(score, (int)player.Position.Y);
 
             #region Background
             foreach (Background bg in Backgrounds)
-                bg.Update(gameTime, direction, viewport, (1 + player.Position.Y / 5));
+                bg.Update(gameTime, direction, viewport, (1 - player.Position.Y / 5));
 
             cities.Update(gameTime, direction, viewport);
-            cities.Offset.Y = -player.Position.Y * 50;
-
-            game.backColor = new Color(
-                (int)(76 * (1 + player.Position.Y / 15)),
-                (int)(220 * (1 + player.Position.Y / 15)),
-                (int)(241 * (1 + player.Position.Y / 15)));
+            cities.Offset.Y = player.Position.Y * 50;
+            if (player.Position.Y <= 15) {
+                game.backColor = new Color(
+                    (int)(169 + (-114 * player.Position.Y / 15)),//55
+                    (int)(239 + (-184 * player.Position.Y / 15)),//55
+                    (int)(249 + (-99 * player.Position.Y / 15)));//150
+            }
             #endregion
 
         }
@@ -75,8 +76,6 @@ namespace DarkJetpack {
             foreach (Background bg in Backgrounds)
                 bg.Draw(spriteBatch);
             cities.Draw(spriteBatch);
-            DarkJetpack.DrawLine(spriteBatch, Color.BlueViolet, new Vector2(0, viewport.Height / 2), new Vector2(viewport.Width, viewport.Height / 2));
-            DarkJetpack.DrawLine(spriteBatch, Color.YellowGreen, new Vector2(viewport.Width / 2, 0), new Vector2(viewport.Width / 2, viewport.Height));
             spriteBatch.DrawString(scoreFont, score + "", new Vector2(50, 50), Color.Red);
             player.Draw(spriteBatch);
 

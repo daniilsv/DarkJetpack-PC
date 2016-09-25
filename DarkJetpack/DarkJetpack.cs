@@ -11,6 +11,7 @@ namespace DarkJetpack {
         Layout curLayout;
         public Color backColor;
         Stack<Layout> layoutBackStack;
+        public Texture2D Terrain;
 
         public DarkJetpack() : base() {
             IsMouseVisible = true;
@@ -19,11 +20,8 @@ namespace DarkJetpack {
             layoutBackStack = new Stack<Layout>();
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
+            Window.Position = new Point(50, 50);
             graphics.ApplyChanges();
-        }
-
-        protected override void Initialize() {
-            base.Initialize();
         }
 
         protected override void LoadContent() {
@@ -31,6 +29,8 @@ namespace DarkJetpack {
 
             baseTexture = new Texture2D(GraphicsDevice, 1, 1);
             baseTexture.SetData(new Color[] { Color.White });
+
+            Terrain = Content.Load<Texture2D>(@"Terrain");
 
             curLayout = new MainMenuLayout(this);
 
@@ -65,9 +65,12 @@ namespace DarkJetpack {
         protected override void Draw(GameTime gameTime) {
             GraphicsDevice.Clear(backColor);
 
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, null, null);
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.AnisotropicWrap, null, null);
 
             curLayout.onDraw(spriteBatch, gameTime);
+
+            DrawLine(spriteBatch, Color.BlueViolet, new Vector2(0, GraphicsDevice.Viewport.Height / 2), new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height / 2));
+            DrawLine(spriteBatch, Color.YellowGreen, new Vector2(GraphicsDevice.Viewport.Width / 2, 0), new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height));
             spriteBatch.End();
             base.Draw(gameTime);
         }

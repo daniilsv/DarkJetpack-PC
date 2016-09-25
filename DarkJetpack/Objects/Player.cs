@@ -30,12 +30,13 @@ namespace DarkJetpack {
             Position = Vector2.Zero;
             Rotation = 0;
             Speed = new Vector2(1, 1);
-            pmS = new ParticleMashine(20, Terrain, new Rectangle(1887, 642, 64, 64));
-            pmF = new ParticleMashine(20, Terrain, new Rectangle(1887, 702, 64, 64));
+            pmS = new ParticleMashine(50, Terrain, new Rectangle(365, 321, 64, 64));
+            pmF = new ParticleMashine(20, Terrain, new Rectangle(365, 381, 64, 64));
         }
 
         public void Update(GameTime gametime, Vector2 direction, Viewport viewport) {
             float elapsed = (float)gametime.ElapsedGameTime.TotalSeconds;
+            direction.Y = -direction.Y;
 
             //Store the viewport
             Viewport = viewport;
@@ -60,32 +61,36 @@ namespace DarkJetpack {
 
             #region Particle Mashine
             Random r = new Random();
-            for (int i = 0; i < pmF.count; i++) {
+            for (int i = 0; i < pmS.count; i++) {
                 ParticleMashine.Particle ps = pmS.particles[i];
-                ParticleMashine.Particle pf = pmF.particles[i];
                 if (ps.l <= 0.1) {
-                    ps.p.X = 50 + Viewport.Width / 2 - Texture.Width * scale / 3f + (float)r.NextDouble() * Texture.Width * scale / 3f;
+                    ps.p.X = 30 + Viewport.Width / 2 - Viewport.Width / 18 + (float)r.NextDouble() * Viewport.Width / 16;
                     ps.p.Y = Viewport.Height / 2 + 80;
                     ps.s = 16 + (int)(32 * r.NextDouble());
-                    ps.c = new Color(Color.White, 100 + (int)(155 * r.NextDouble()));
-                    ps.l = 16;
-
-                    pf.p.X = 40 + Viewport.Width / 2 - Texture.Width * scale / 3f + (float)r.NextDouble() * Texture.Width * scale / 4f;
-                    pf.p.Y = Viewport.Height / 2 + 100;
-                    pf.s = 10 + (int)(20 * r.NextDouble());
-                    pf.c = new Color(Color.Orange, 25 + (int)(55 * r.NextDouble()));
-                    pf.l = 8;
+                    ps.c = new Color(Color.LightGray, 155 + (int)(100 * r.NextDouble()));
+                    ps.l = 8;
                 }
 
                 ps.p.X += ps.v.X; ps.p.Y += ps.v.Y;
-                ps.v.X = -3f + 6 * (float)r.NextDouble() - direction.X * 3 * (float)r.NextDouble();
-                ps.v.Y = 2 - direction.Y * (float)r.NextDouble();
+                ps.v.X = -10 + 20 * (float)r.NextDouble() - 10 * direction.X * (float)r.NextDouble();
+                ps.v.Y = 5 - direction.Y * (float)r.NextDouble();
                 ps.l -= (float)r.NextDouble();
                 pmS.particles[i] = ps;
+            }
+
+            for (int i = 0; i < pmF.count; i++) {
+                ParticleMashine.Particle pf = pmF.particles[i];
+                if (pf.l <= 0.1) {
+                    pf.p.X = 30 + Viewport.Width / 2 - Viewport.Width / 18 + (float)r.NextDouble() * Viewport.Width / 16;
+                    pf.p.Y = Viewport.Height / 2 + 100;
+                    pf.s = 10 + (int)(20 * r.NextDouble());
+                    pf.c = new Color(Color.Red, 55 + (int)(200 * r.NextDouble()));
+                    pf.l = 8;
+                }
 
                 pf.p.X += pf.v.X; pf.p.Y += pf.v.Y;
-                pf.v.X = -3f + 6 * (float)r.NextDouble() - direction.X * 3 * (float)r.NextDouble();
-                pf.v.Y = 2 - direction.Y * (float)r.NextDouble();
+                pf.v.X = -5 + 10 * (float)r.NextDouble() - 5 * direction.X * (float)r.NextDouble();
+                pf.v.Y = 3 - direction.Y * (float)r.NextDouble();
                 pf.l -= (float)r.NextDouble();
                 pmF.particles[i] = pf;
             }
