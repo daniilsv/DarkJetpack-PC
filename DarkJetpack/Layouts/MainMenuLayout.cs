@@ -10,6 +10,7 @@ namespace DarkJetpack {
         double lastTime = 0;
         private ParticleMashine particleMashine;
         Window testw;
+
         public MainMenuLayout(DarkJetpack _game) : base(_game) {
             particleMashine = new ParticleMashine(50, DarkJetpack.baseTexture, null);
             interferenceTexture = new Texture2D(game.GraphicsDevice, 200, 150);
@@ -23,15 +24,14 @@ namespace DarkJetpack {
         public override void onUnLoad() {
         }
         public override void update(GameTime gameTime) {
-            MouseState msState = Mouse.GetState();
-
+            Point mousePosition = game.GetMousePosition();
             #region Particle Mashine
             Random r = new Random();
             for (int i = 0; i < particleMashine.count; i++) {
                 ParticleMashine.Particle p = particleMashine.particles[i];
                 if (p.l <= 0.1) {
-                    p.p.X = msState.X;
-                    p.p.Y = msState.Y;
+                    p.p.X = mousePosition.X;
+                    p.p.Y = mousePosition.Y;
                     p.s = 3 + (int)(3 * r.NextDouble());
                     p.l = 8;
                 }

@@ -64,9 +64,9 @@ namespace DarkJetpack {
             cities.Offset.Y = player.Position.Y * 50;
             if (player.Position.Y <= 15) {
                 game.backColor = new Color(
-                    (int)(169 + (-114 * player.Position.Y / 15)),//55
-                    (int)(239 + (-184 * player.Position.Y / 15)),//55
-                    (int)(249 + (-99 * player.Position.Y / 15)));//150
+                    (int)(169 + (-114 * player.Position.Y / 10)),//55
+                    (int)(239 + (-184 * player.Position.Y / 10)),//55
+                    (int)(249 + (-99 * player.Position.Y / 10)));//150
             }
             #endregion
 
