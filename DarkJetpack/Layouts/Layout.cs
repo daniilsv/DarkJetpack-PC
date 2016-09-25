@@ -10,7 +10,7 @@ namespace DarkJetpack {
         protected Viewport viewport;
         protected MouseState oldMsState;
         protected KeyboardState oldKbState;
-        List<Button> buttons;
+        protected List<Button> buttons;
         public Point windowBounds;
         public Layout(DarkJetpack _game) {
             game = _game;
@@ -47,8 +47,6 @@ namespace DarkJetpack {
         public virtual void draw(SpriteBatch spriteBatch, GameTime gameTime) { }
         public void onDraw(SpriteBatch spriteBatch, GameTime gameTime) {
             draw(spriteBatch, gameTime);
-            foreach (Button b in buttons)
-                b.onDraw(spriteBatch, gameTime);
         }
 
 

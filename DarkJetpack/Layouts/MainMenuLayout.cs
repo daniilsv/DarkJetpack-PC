@@ -71,6 +71,8 @@ namespace DarkJetpack {
         }
         public override void draw(SpriteBatch spriteBatch, GameTime gameTime) {
             testw.onDraw(spriteBatch, gameTime);
+            foreach (Button b in buttons)
+                b.onDraw(spriteBatch, gameTime);
             particleMashine.draw(spriteBatch);
             //spriteBatch.Draw(interferenceTexture, new Rectangle(200, 200, 200, 150), Color.White);
         }
