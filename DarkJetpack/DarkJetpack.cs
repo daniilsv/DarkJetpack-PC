@@ -18,7 +18,7 @@ namespace DarkJetpack {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             layoutBackStack = new Stack<Layout>();
-            graphics.IsFullScreen=true;
+            //graphics.IsFullScreen=true;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.PreferredBackBufferHeight = 720;
             Window.Position = new Point(50, 50);
