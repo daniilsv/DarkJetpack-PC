@@ -38,6 +38,7 @@ namespace DarkJetpack {
 
         public void Draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(Texture, new Vector2(Viewport.X, Viewport.Height - 321 * Zoom + Offset.Y), Rectangle, Color.White, 0, Vector2.Zero, Zoom, SpriteEffects.None, 1);
+
         }
     }
 }

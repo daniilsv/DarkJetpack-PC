@@ -12,6 +12,8 @@ namespace DarkJetpack {
         protected KeyboardState oldKbState;
         protected List<Button> buttons;
         public Point windowBounds;
+        private Vector2 targetResolutionScale = Vector2.Zero;
+
         public Layout(DarkJetpack _game) {
             game = _game;
             buttons = new List<Button>();
@@ -26,7 +28,7 @@ namespace DarkJetpack {
             update(gameTime);
 
             MouseState msState = Mouse.GetState();
-            Point mousePosition = game.GetMousePosition();
+            Point mousePosition = new Point(msState.X, msState.Y);
             #region Buttons
             foreach (Button b in buttons) {
                 if (b.b.Contains(mousePosition.X, mousePosition.Y)) {
@@ -93,18 +95,18 @@ namespace DarkJetpack {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
                 //Top
                 spriteBatch.Draw(t, new Vector2(b.Left, b.Top), null, new Rectangle(552, 321, 29, 29), null, 0, null, Color.White);
-                spriteBatch.Draw(t, new Rectangle(b.Left + 28, b.Top, b.Width - 3 * 28, 29), new Rectangle(581, 321, 1, 29), Color.White);
-                spriteBatch.Draw(t, new Vector2(b.Left + b.Width - 29, b.Top), null, new Rectangle(552, 321, 29, 29), null, MathHelper.PiOver2, null, Color.White);
+                spriteBatch.Draw(t, new Rectangle(b.Left + 28, b.Top, b.Width - 2 * 28, 29), new Rectangle(581, 321, 1, 29), Color.White);
+                spriteBatch.Draw(t, new Vector2(b.Left + b.Width, b.Top), null, new Rectangle(552, 321, 29, 29), null, MathHelper.PiOver2, null, Color.White);
 
                 //Center
                 spriteBatch.Draw(t, null, new Rectangle(b.Left + 29, b.Top + 28, b.Height - 3 * 25, 29), new Rectangle(581, 321, 1, 29), new Vector2(1, 29), -MathHelper.PiOver2, null, Color.White);
-                spriteBatch.Draw(DarkJetpack.baseTexture, new Rectangle(b.Left + 29, b.Top + 29, b.Width - 3 * 29, b.Height - 3 * 29), new Color(149, 163, 85));
-                spriteBatch.Draw(t, null, new Rectangle(b.Left + b.Width - 29, b.Top + 29, b.Height - 3 * 25, 29), new Rectangle(581, 321, 1, 29), new Vector2(0, 0), MathHelper.PiOver2, null, Color.White);
+                spriteBatch.Draw(DarkJetpack.baseTexture, new Rectangle(b.Left + 29, b.Top + 29, b.Width - 2 * 29, b.Height - 2 * 29), new Color(149, 163, 85));
+                spriteBatch.Draw(t, null, new Rectangle(b.Left + b.Width, b.Top + 29, b.Height - 3 * 25, 29), new Rectangle(581, 321, 1, 29), new Vector2(0, 0), MathHelper.PiOver2, null, Color.White);
 
                 //Bottom
                 spriteBatch.Draw(t, new Vector2(b.Left, b.Top + b.Height - 29), null, new Rectangle(552, 321, 29, 29), Vector2.Zero, -MathHelper.PiOver2, null, Color.White);
-                spriteBatch.Draw(t, null, new Rectangle(b.Left + 26, b.Top + b.Height - 2 * 29, b.Width - 3 * 28, 29), new Rectangle(581, 321, 1, 29), new Vector2(1, 29), MathHelper.Pi, null, Color.White);
-                spriteBatch.Draw(t, new Vector2(b.Left + b.Width - 29, b.Top + b.Height - 29), null, new Rectangle(552, 321, 29, 29), null, MathHelper.Pi, null, Color.White);
+                spriteBatch.Draw(t, null, new Rectangle(b.Left + 26, b.Top + b.Height - 2 * 29, b.Width - 2 * 28, 29), new Rectangle(581, 321, 1, 29), new Vector2(1, 29), MathHelper.Pi, null, Color.White);
+                spriteBatch.Draw(t, new Vector2(b.Left + b.Width, b.Top + b.Height - 29), null, new Rectangle(552, 321, 29, 29), null, MathHelper.Pi, null, Color.White);
 
                 spriteBatch.End();
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, null, null);

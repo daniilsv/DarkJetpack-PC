@@ -47,6 +47,7 @@
     <Compile Include="Objects\Cities.cs" />
     <Compile Include="Objects\Background.cs" />
     <Compile Include="DarkJetpack.cs" />
+    <Compile Include="Objects\Enemies\Enemy.cs" />
     <Compile Include="Objects\ParticleMashine.cs" />
     <Compile Include="Objects\Player.cs" />
     <Compile Include="Program.cs" />

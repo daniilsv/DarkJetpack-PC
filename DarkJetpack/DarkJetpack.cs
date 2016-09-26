@@ -18,29 +18,11 @@ namespace DarkJetpack {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             layoutBackStack = new Stack<Layout>();
-            //graphics.IsFullScreen=true;
-            graphics.PreferredBackBufferWidth = 1280;
-            graphics.PreferredBackBufferHeight = 720;
-            Window.Position = new Point(50, 50);
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width-200;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height-100;
+            Window.Position = new Point(50, 10);
+            //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
-        }
-        public Point GetMousePosition() {
-            MouseState msState = Mouse.GetState();
-            Point mousePosition = msState.Position;
-            if (graphics.IsFullScreen)
-            {
-                int VIRTUAL_RESOLUTION_WIDTH = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-                int VIRTUAL_RESOLUTION_HEIGHT = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
-                Vector2 TargetResolutionScale = new Vector2
-                (
-                   graphics.PreferredBackBufferWidth * 1.0f / VIRTUAL_RESOLUTION_WIDTH,
-                   graphics.PreferredBackBufferHeight * 1.0f / VIRTUAL_RESOLUTION_HEIGHT
-                );
-                mousePosition = new Point(
-               (int)(mousePosition.X * TargetResolutionScale.X),
-               (int)(mousePosition.Y * TargetResolutionScale.Y));
-            }
-            return mousePosition;
         }
         protected override void LoadContent() {
             spriteBatch = new SpriteBatch(GraphicsDevice);
