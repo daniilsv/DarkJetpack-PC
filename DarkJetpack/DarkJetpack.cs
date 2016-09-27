@@ -12,14 +12,14 @@ namespace DarkJetpack {
         public Color backColor;
         Stack<Layout> layoutBackStack;
         public Texture2D Terrain;
-
+        public static bool isDebug = false;
         public DarkJetpack() : base() {
             IsMouseVisible = true;
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             layoutBackStack = new Stack<Layout>();
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width-200;
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height-100;
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 200;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
             Window.Position = new Point(50, 10);
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
@@ -32,7 +32,7 @@ namespace DarkJetpack {
 
             Terrain = Content.Load<Texture2D>(@"Terrain");
 
-            curLayout = new MainMenuLayout(this);
+            changeLayoutTo(new MainMenuLayout(this));
 
             backColor = new Color(76, 220, 241);
         }
@@ -50,6 +50,9 @@ namespace DarkJetpack {
             if (kbState.IsKeyDown(Keys.F11)) {
                 graphics.IsFullScreen = !graphics.IsFullScreen;
                 graphics.ApplyChanges();
+            }
+            if (kbState.IsKeyDown(Keys.F8)) {
+                isDebug = !isDebug;
             }
 
             curLayout.onUpdate(gameTime, GraphicsDevice.Viewport);
@@ -69,21 +72,37 @@ namespace DarkJetpack {
 
             curLayout.onDraw(spriteBatch, gameTime);
 
-            DrawLine(spriteBatch, Color.BlueViolet, new Vector2(0, GraphicsDevice.Viewport.Height / 2), new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height / 2));
-            DrawLine(spriteBatch, Color.YellowGreen, new Vector2(GraphicsDevice.Viewport.Width / 2, 0), new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height));
+            if (isDebug) {
+                DrawLine(spriteBatch, Color.BlueViolet, new Vector2(0, GraphicsDevice.Viewport.Height / 2), new Vector2(GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height / 2));
+                DrawLine(spriteBatch, Color.YellowGreen, new Vector2(GraphicsDevice.Viewport.Width / 2, 0), new Vector2(GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Height));
+            }
             spriteBatch.End();
             base.Draw(gameTime);
         }
 
         public bool changeLayoutTo(Layout layoutToChange) {
-            layoutBackStack.Push(curLayout);
+            if (layoutToChange == null)
+                return false;
+            if (curLayout != null) {
+                layoutBackStack.Push(curLayout);
+                curLayout.onPause();
+            }
             curLayout = layoutToChange;
+            if (curLayout != null) {
+                curLayout.onLoad();
+                curLayout.onResume();
+            }
             return true;
         }
-        public Layout changeLayoutBack() {
-            Layout prevLayout = curLayout;
+        public bool changeLayoutBack() {
+            if (curLayout != null) {
+                curLayout.onPause();
+                curLayout.onUnLoad();
+            }
             curLayout = layoutBackStack.Pop();
-            return prevLayout;
+            if (curLayout != null)
+                curLayout.onResume();
+            return true;
         }
     }
 }

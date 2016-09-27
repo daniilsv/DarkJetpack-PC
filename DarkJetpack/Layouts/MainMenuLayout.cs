@@ -28,14 +28,16 @@ namespace DarkJetpack {
             addButton(new Rectangle(windowBounds.X / 2 - 100, windowBounds.Y - 200, 200, 50), game.Terrain, new Rectangle(429, 321, 123, 41), (() => game.changeLayoutTo(new GameLayout(game))));
 
         }
+
         public override void onUnLoad() {
         }
+
         public override void update(GameTime gameTime) {
             MouseState msState = Mouse.GetState();
             Point mousePosition = new Point(msState.X, msState.Y);
 
             #region Particle Mashine
-            int dy = (int)(2.5f * Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100));
+            int dy = (int)(2.5f * Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 200));
             Random r = new Random();
             for (int i = 0; i < 150; i++) {
                 ParticleMashine.Particle p1 = particleMashine1.particles[i];
@@ -77,37 +79,37 @@ namespace DarkJetpack {
                 }
 
                 p1.p.X += p1.v.X; p1.p.Y += p1.v.Y + dy;
-                p1.v.X = -12 + 6.0f * (float)r.NextDouble();
+                p1.v.X = -6 - 2.0f * (float)r.NextDouble();
                 p1.v.Y = -2f + 4.0f * (float)r.NextDouble();
                 p1.l -= 0.02f + 0.9f * (float)r.NextDouble();
 
                 p2.p.X += p2.v.X; p2.p.Y += p2.v.Y + dy;
-                p2.v.X = -12 + 6.0f * (float)r.NextDouble();
+                p2.v.X = -6 - 2.0f * (float)r.NextDouble();
                 p2.v.Y = -2f + 4.0f * (float)r.NextDouble();
                 p2.l -= 0.02f + 0.9f * (float)r.NextDouble();
 
                 p3.p.X += p3.v.X; p3.p.Y += p3.v.Y + dy;
-                p3.v.X = -12 + 6.0f * (float)r.NextDouble();
+                p3.v.X = -6 - 2.0f * (float)r.NextDouble();
                 p3.v.Y = -2f + 4.0f * (float)r.NextDouble();
                 p3.l -= 0.02f + 0.9f * (float)r.NextDouble();
 
                 p4.p.X += p4.v.X; p4.p.Y += p4.v.Y + dy;
-                p4.v.X = -12 + 6.0f * (float)r.NextDouble();
+                p4.v.X = -6 - 2.0f * (float)r.NextDouble();
                 p4.v.Y = -2f + 4.0f * (float)r.NextDouble();
                 p4.l -= 0.02f + 0.9f * (float)r.NextDouble();
 
                 p5.p.X += p5.v.X; p5.p.Y += p5.v.Y + dy;
-                p5.v.X = -12 + 6.0f * (float)r.NextDouble();
+                p5.v.X = -6 - 2.0f * (float)r.NextDouble();
                 p5.v.Y = -2f + 4.0f * (float)r.NextDouble();
                 p5.l -= 0.02f + 0.9f * (float)r.NextDouble();
 
                 p6.p.X += p6.v.X; p6.p.Y += p6.v.Y + dy;
-                p6.v.X = -12 + 6.0f * (float)r.NextDouble();
+                p6.v.X = -6 - 2.0f * (float)r.NextDouble();
                 p6.v.Y = -2f + 4.0f * (float)r.NextDouble();
                 p6.l -= 0.02f + 0.9f * (float)r.NextDouble();
 
                 p7.p.X += p7.v.X; p7.p.Y += p7.v.Y + dy;
-                p7.v.X = -12 + 6.0f * (float)r.NextDouble();
+                p7.v.X = -6 - 2.0f * (float)r.NextDouble();
                 p7.v.Y = -2f + 4.0f * (float)r.NextDouble();
                 p7.l -= 0.02f + 0.9f * (float)r.NextDouble();
 
@@ -146,6 +148,7 @@ namespace DarkJetpack {
 
             }
         }
+
         void drawCharacterWindow(SpriteBatch spriteBatch, GameTime gameTime) {
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
@@ -168,9 +171,9 @@ namespace DarkJetpack {
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.LinearWrap, null, null);
 
-            spriteBatch.Draw(t, null, new Rectangle(b.Left + b.Width / 8 + 7, b.Top + b.Height / 8 + 7, b.Width - 2 * b.Width / 8 - 2, b.Height - 3 * b.Height / 8 - 14), new Rectangle((int)(gameTime.TotalGameTime.TotalMilliseconds / 2), 0, b.Width - 206, 321), Vector2.Zero, 0, null, Color.White);
+            spriteBatch.Draw(t, null, new Rectangle(b.Left + b.Width / 8 + 7, b.Top + b.Height / 8 + 7, b.Width - 2 * b.Width / 8 - 2, b.Height - 3 * b.Height / 8 - 14), new Rectangle((int)(gameTime.TotalGameTime.TotalMilliseconds / 4), 0, b.Width - 206, 321), Vector2.Zero, 0, null, Color.White);
 
-            int dy = (int)(10 * Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 100));
+            int dy = (int)(10 * Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 200));
 
             particleMashine1.draw(spriteBatch);
             particleMashine2.draw(spriteBatch);
@@ -181,7 +184,7 @@ namespace DarkJetpack {
             particleMashine7.draw(spriteBatch);
             spriteBatch.Draw(playerTexture, null, new Rectangle(viewport.Width / 2 - viewport.Width / 24 + 5, viewport.Height / 2 - viewport.Height / 8 + dy, viewport.Width / 12, viewport.Height / 4),
                 new Rectangle(0, 0, playerTexture.Width, playerTexture.Height), null, 0, null, Color.White);
-            spriteBatch.Draw(interferenceTexture, new Rectangle(b.Left + b.Width / 8 + 7, b.Top + b.Height / 8 + 7, b.Width - 2 * b.Width / 8 - 2, b.Height - 3 * b.Height / 8 - 14), Color.White * 0.25f);
+            spriteBatch.Draw(interferenceTexture, new Rectangle(b.Left + b.Width / 8 + 7, b.Top + b.Height / 8 + 7, b.Width - 2 * b.Width / 8 - 2, b.Height - 3 * b.Height / 8 - 14), Color.White * 0.2f);
         }
 
         public override void draw(SpriteBatch spriteBatch, GameTime gameTime) {

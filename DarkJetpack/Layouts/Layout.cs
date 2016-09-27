@@ -18,7 +18,6 @@ namespace DarkJetpack {
             game = _game;
             buttons = new List<Button>();
             windowBounds = new Point(game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
-            onLoad();
         }
         public virtual void onLoad() { }
         public virtual void onUnLoad() { }
@@ -54,6 +53,10 @@ namespace DarkJetpack {
 
 
         public virtual void onBackPressed() { game.changeLayoutBack(); }
+
+        public virtual void onPause() { }
+
+        public virtual void onResume() { }
 
         public void addButton(Rectangle bounds, Texture2D texture, Rectangle? texBounds, Func<bool> callback) { buttons.Add(new Button(bounds, texture, texBounds, callback)); }
 

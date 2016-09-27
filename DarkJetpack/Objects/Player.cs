@@ -4,22 +4,21 @@ using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 
 namespace DarkJetpack {
-    class Player {
+    public class Player {
 
         private Texture2D Texture;      //The image to use
         public Vector2 Position;         //Offset to start drawing our image
         private Vector2 Speed;           //Speed of movement of our parallax effect
+        private Vector2 Vel;           //Speed of movement of our parallax effect
         private float Rotation;
         private Viewport Viewport;      //Our game viewport
         private float scale;
         private ParticleMashine pmS, pmF;
+        public int life = 5;
         DarkJetpack game;
-        private Rectangle Rectangle {
+        public Rectangle Rectangle {
             get {
-                return new Rectangle((Viewport.Width / 2 - Viewport.Width / 16),
-              (Viewport.Height / 2 - Viewport.Height / 8),
-              (Viewport.Width / 8),
-              (Viewport.Height / 4));
+                return new Rectangle(Viewport.Width / 2 - Viewport.Width / 18, Viewport.Height / 2 - Viewport.Height / 6, Viewport.Width / 9, Viewport.Height / 3);
             }
         }
         Texture2D Terrain;
@@ -29,7 +28,7 @@ namespace DarkJetpack {
             Texture = game.Content.Load<Texture2D>(@"player");
             Position = Vector2.Zero;
             Rotation = 0;
-            Speed = new Vector2(1, 1);
+            Speed = new Vector2(1.5f, 1.5f);
             pmS = new ParticleMashine(50, Terrain, new Rectangle(365, 321, 64, 64));
             pmF = new ParticleMashine(20, Terrain, new Rectangle(365, 381, 64, 64));
         }
@@ -40,19 +39,17 @@ namespace DarkJetpack {
 
             //Store the viewport
             Viewport = viewport;
-
             scale = ((float)Viewport.Height / 3 / Texture.Height);
 
             //Calculate the distance to move our image, based on speed
             Vector2 distance = direction * Speed * elapsed;
 
             Position += distance;
-
             /*
-            if (direction.X == 1 && Rotation <= 0.38) {
+            if (direction.X == 1 && Rotation <= 0.30) {
                 Rotation += 0.03f;
             } else
-            if (direction.X == -1 && Rotation >= -0.38) {
+            if (direction.X == -1 && Rotation >= -0.30) {
                 Rotation -= 0.03f;
             } else if (Math.Abs(Rotation) >= 0.03f && direction.X == 0) {
                 Rotation -= Math.Sign(Rotation) * 0.025f;
@@ -101,8 +98,10 @@ namespace DarkJetpack {
         public void Draw(SpriteBatch spriteBatch) {
             pmF.draw(spriteBatch);
             pmS.draw(spriteBatch);
-            spriteBatch.Draw(Texture, null, new Rectangle(Viewport.Width / 2 - Viewport.Width / 18, Viewport.Height / 2 - Viewport.Height / 6, Viewport.Width / 9, Viewport.Height / 3),
+            spriteBatch.Draw(Texture, null, Rectangle,
                 new Rectangle(0, 0, Texture.Width, Texture.Height), null, Rotation, null, Color.White);
+            if (DarkJetpack.isDebug)
+                spriteBatch.Draw(DarkJetpack.baseTexture, Rectangle, new Color(Color.DarkKhaki, 0.2f));
         }
     }
 }
