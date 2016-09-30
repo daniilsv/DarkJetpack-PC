@@ -11,6 +11,8 @@ namespace DarkJetpack {
         private ParticleMashine particleMashine1, particleMashine2, particleMashine3, particleMashine4, particleMashine5, particleMashine6, particleMashine7;
         Window testw;
         Texture2D playerTexture;
+        int playerSkinNum = 0;
+        private SpriteFont scoreFont;
         public MainMenuLayout(DarkJetpack game) : base(game) {
             particleMashine1 = new ParticleMashine(150, DarkJetpack.baseTexture, null);
             particleMashine2 = new ParticleMashine(150, DarkJetpack.baseTexture, null);
@@ -21,11 +23,26 @@ namespace DarkJetpack {
             particleMashine7 = new ParticleMashine(150, DarkJetpack.baseTexture, null);
             interferenceTexture = new Texture2D(game.GraphicsDevice, 200, 150);
         }
-
+        private bool prevPlayerSkin() {
+            playerSkinNum--;
+            if (playerSkinNum == -1)
+                playerSkinNum = 7;
+            return true;
+        }
+        private bool nextPlayerSkin() {
+            playerSkinNum++;
+            if (playerSkinNum == 8)
+                playerSkinNum = 0;
+            return true;
+        }
         public override void onLoad() {
+            scoreFont = game.Content.Load<SpriteFont>(@"ScoreFont");
             playerTexture = game.Content.Load<Texture2D>(@"player");
             testw = new Window(new Rectangle(100, 100, windowBounds.X - 200, windowBounds.Y - 200), game.Terrain);
-            addButton(new Rectangle(windowBounds.X / 2 - 100, windowBounds.Y - 200, 200, 50), game.Terrain, new Rectangle(429, 321, 123, 41), (() => game.changeLayoutTo(new GameLayout(game))));
+            addButton(new Rectangle(windowBounds.X / 2 - 100, windowBounds.Y - 200, 200, 50), game.Terrain, new Rectangle(429, 321, 123, 41), (() => game.changeLayoutTo(new GameLayout(game, playerSkinNum))));
+
+            addButton(new Rectangle(windowBounds.X / 2 - 150, windowBounds.Y - 200, 35, 50), game.Terrain, new Rectangle(594, 365, 31, 44), (() => prevPlayerSkin()));
+            addButton(new Rectangle(windowBounds.X / 2 + 115, windowBounds.Y - 200, 35, 50), game.Terrain, new Rectangle(594, 321, 31, 44), (() => nextPlayerSkin()));
 
         }
 
@@ -143,7 +160,7 @@ namespace DarkJetpack {
 
             KeyboardState kbState = Keyboard.GetState();
             if (kbState.IsKeyDown(Keys.Enter) && !oldKbState.IsKeyDown(Keys.Enter)) {
-                game.changeLayoutTo(new GameLayout(game));
+                game.changeLayoutTo(new GameLayout(game, playerSkinNum));
             } else if (oldKbState.IsKeyDown(Keys.Enter)) {
 
             }
@@ -183,7 +200,7 @@ namespace DarkJetpack {
             particleMashine6.draw(spriteBatch);
             particleMashine7.draw(spriteBatch);
             spriteBatch.Draw(playerTexture, null, new Rectangle(viewport.Width / 2 - viewport.Width / 24 + 5, viewport.Height / 2 - viewport.Height / 8 + dy, viewport.Width / 12, viewport.Height / 4),
-                new Rectangle(0, 0, playerTexture.Width, playerTexture.Height), null, 0, null, Color.White);
+                new Rectangle(playerSkinNum * 400, 0, 400, 800), null, 0, null, Color.White);
             spriteBatch.Draw(interferenceTexture, new Rectangle(b.Left + b.Width / 8 + 7, b.Top + b.Height / 8 + 7, b.Width - 2 * b.Width / 8 - 2, b.Height - 3 * b.Height / 8 - 14), Color.White * 0.2f);
         }
 
@@ -192,6 +209,7 @@ namespace DarkJetpack {
             drawCharacterWindow(spriteBatch, gameTime);
             foreach (Button b in buttons)
                 b.onDraw(spriteBatch, gameTime);
+            spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 70, windowBounds.Y - 190), Color.MonoGameOrange, 0, Vector2.Zero, 1.75f, SpriteEffects.None, 1);
         }
     }
 }

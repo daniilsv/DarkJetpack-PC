@@ -17,9 +17,9 @@ namespace DarkJetpack {
         private Rectangle Rectangle {
             get { return new Rectangle((int)(Offset.X), (int)(Offset.Y), (int)(Viewport.Width / Zoom), (int)(Viewport.Height / Zoom)); }
         }
-            
-        public Background(Texture2D texture, Vector2 speed, float zoom) {
-            Texture = texture;
+
+        public Background(Vector2 speed, float zoom) {
+            Texture = null;
             Offset = Vector2.Zero;
             Speed = speed;
             Zoom = zoom;
@@ -33,7 +33,12 @@ namespace DarkJetpack {
         }
 
         public void Draw(SpriteBatch spriteBatch) {
+            if (Texture == null)
+                return;
             spriteBatch.Draw(Texture, new Vector2(Viewport.X, Viewport.Y), Rectangle, Color.White * alpha, 0, Vector2.Zero, Zoom, SpriteEffects.None, 1);
+        }
+        public void setTexture(Texture2D tex) {
+            Texture = tex;
         }
     }
 }

@@ -9,7 +9,6 @@ namespace DarkJetpack {
         private Texture2D Texture;      //The image to use
         public Vector2 Position;         //Offset to start drawing our image
         private Vector2 Speed;           //Speed of movement of our parallax effect
-        private Vector2 Vel;           //Speed of movement of our parallax effect
         private float Rotation;
         private Viewport Viewport;      //Our game viewport
         private float scale;
@@ -21,10 +20,12 @@ namespace DarkJetpack {
                 return new Rectangle(Viewport.Width / 2 - Viewport.Width / 18, Viewport.Height / 2 - Viewport.Height / 6, Viewport.Width / 9, Viewport.Height / 3);
             }
         }
+        int skinNum;
         Texture2D Terrain;
-        public Player(DarkJetpack _game, Texture2D terrain) {
+        public Player(DarkJetpack _game, Texture2D terrain, int skinN) {
             game = _game;
             Terrain = terrain;
+            skinNum = skinN;
             Texture = game.Content.Load<Texture2D>(@"player");
             Position = Vector2.Zero;
             Rotation = 0;
@@ -99,7 +100,7 @@ namespace DarkJetpack {
             pmF.draw(spriteBatch);
             pmS.draw(spriteBatch);
             spriteBatch.Draw(Texture, null, Rectangle,
-                new Rectangle(0, 0, Texture.Width, Texture.Height), null, Rotation, null, Color.White);
+                new Rectangle(skinNum * 400, 0, 400, 800), null, Rotation, null, Color.White);
             if (DarkJetpack.isDebug)
                 spriteBatch.Draw(DarkJetpack.baseTexture, Rectangle, new Color(Color.DarkKhaki, 0.2f));
         }

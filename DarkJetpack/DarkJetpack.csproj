@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Layouts\Layout.cs" />
     <Compile Include="Layouts\GameLayout.cs" />
+    <Compile Include="Layouts\GameOverLayout.cs" />
     <Compile Include="Layouts\MainMenuLayout.cs" />
     <Compile Include="Objects\Cities.cs" />
     <Compile Include="Objects\Background.cs" />
@@ -62,11 +63,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Clouds1.png" />
+    <Content Include="Content\Clouds2.png" />
+    <Content Include="Content\Clouds3.png" />
     <Content Include="Content\Icon.ico" />
+    <Content Include="Content\Stars1.png" />
+    <Content Include="Content\Stars2.png" />
+    <Content Include="Content\Stars3.png" />
   </ItemGroup>
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="Content\Player.psd" />
+    <None Include="Content\ScoreFont.spritefont" />
     <None Include="Content\Terrain.psd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

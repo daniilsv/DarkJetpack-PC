@@ -56,7 +56,10 @@ namespace DarkJetpack {
 
         public virtual void onPause() { }
 
-        public virtual void onResume() { }
+        public virtual void onResume() {
+            oldMsState = Mouse.GetState();
+            oldKbState = Keyboard.GetState();
+        }
 
         public void addButton(Rectangle bounds, Texture2D texture, Rectangle? texBounds, Func<bool> callback) { buttons.Add(new Button(bounds, texture, texBounds, callback)); }
 
