@@ -151,12 +151,11 @@ namespace DarkJetpack {
             player.Draw(spriteBatch);
             foreach (Asteroid ast in asteroids)
                 ast.Draw(spriteBatch);
-
             spriteBatch.DrawString(scoreFont, player.Position + "", new Vector2(10, 10), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
             for (int i = 0; i < player.life; i++)
-                spriteBatch.Draw(Terrain, new Vector2(50 + 30 * i, 100), null, new Rectangle(625, 376, 52, 46), Vector2.Zero, 0, new Vector2(0.5f), Color.Orange);
-
-            spriteBatch.DrawString(scoreFont, score + "", new Vector2(50, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 1);
+                spriteBatch.Draw(Terrain, new Vector2(50 + 50 * i, 50), null, new Rectangle(625, 376, 51, 46), Vector2.Zero, 0, new Vector2(0.8f));
+            spriteBatch.Draw(Terrain, new Vector2(windowBounds.X - 102, 50), null, new Rectangle(677, 376, 52, 46), Vector2.Zero, 0);
+            spriteBatch.DrawString(scoreFont, score + "", new Vector2(windowBounds.X/2-20, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 1);
         }
     }
 }

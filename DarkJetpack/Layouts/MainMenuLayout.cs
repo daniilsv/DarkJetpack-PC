@@ -209,7 +209,9 @@ namespace DarkJetpack {
             drawCharacterWindow(spriteBatch, gameTime);
             foreach (Button b in buttons)
                 b.onDraw(spriteBatch, gameTime);
-            spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 70, windowBounds.Y - 190), Color.MonoGameOrange, 0, Vector2.Zero, 1.75f, SpriteEffects.None, 1);
+            spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 79, windowBounds.Y - 182), Color.Black, 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
+            spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 81, windowBounds.Y - 184), Color.Black, 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
+            spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 80, windowBounds.Y - 183), new Color(255,134,26), 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
         }
     }
 }

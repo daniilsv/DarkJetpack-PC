@@ -74,6 +74,7 @@
   <ItemGroup>
     <MonoGameContentReference Include="Content\Content.mgcb" />
     <None Include="app.manifest" />
+    <None Include="Content\BIG JOHN.otf" />
     <None Include="Content\Player.psd" />
     <None Include="Content\ScoreFont.spritefont" />
     <None Include="Content\Terrain.psd" />

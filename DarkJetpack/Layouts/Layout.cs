@@ -101,7 +101,7 @@ namespace DarkJetpack {
                 spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
                 //Top
                 spriteBatch.Draw(t, new Vector2(b.Left, b.Top), null, new Rectangle(552, 321, 29, 29), null, 0, null, Color.White);
-                spriteBatch.Draw(t, new Rectangle(b.Left + 28, b.Top, b.Width - 2 * 28, 29), new Rectangle(581, 321, 1, 29), Color.White);
+                spriteBatch.Draw(t, new Rectangle(b.Left + 28, b.Top, b.Width - 2 * 27, 29), new Rectangle(581, 321, 1, 29), Color.White);
                 spriteBatch.Draw(t, new Vector2(b.Left + b.Width, b.Top), null, new Rectangle(552, 321, 29, 29), null, MathHelper.PiOver2, null, Color.White);
 
                 //Center
