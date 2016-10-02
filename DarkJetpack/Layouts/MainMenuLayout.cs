@@ -25,13 +25,13 @@ namespace DarkJetpack {
         }
         private bool prevPlayerSkin() {
             playerSkinNum--;
-            if (playerSkinNum == -1)
+            if (playerSkinNum == 0)
                 playerSkinNum = 7;
             return true;
         }
         private bool nextPlayerSkin() {
             playerSkinNum++;
-            if (playerSkinNum == 8)
+            if (playerSkinNum == 7)
                 playerSkinNum = 0;
             return true;
         }

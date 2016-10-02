@@ -115,3 +115,93 @@
 /processorParam:TextureFormat=Color
 /build:Stars3.png
 
+#begin music/01. Epsilon.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/01. Epsilon.mp3
+
+#begin music/02. Game Not Over.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/02. Game Not Over.mp3
+
+#begin music/03. Dead Space.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/03. Dead Space.mp3
+
+#begin music/04. Mounting a Nightmare.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/04. Mounting a Nightmare.mp3
+
+#begin music/05. Reach the Galaxy.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/05. Reach the Galaxy.mp3
+
+#begin music/06. Sky Pony.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/06. Sky Pony.mp3
+
+#begin music/07. Hard Drive.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/07. Hard Drive.mp3
+
+#begin music/08. Jinx.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/08. Jinx.mp3
+
+#begin music/09. Between Death And Stars.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/09. Between Death And Stars.mp3
+
+#begin music/10. Nobody Will Escape .mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/10. Nobody Will Escape .mp3
+
+#begin music/11. Pen In My Hand.mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/11. Pen In My Hand.mp3
+
+#begin music/12. Road To Heaven (feat. Matty M.).mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/12. Road To Heaven (feat. Matty M.).mp3
+
+#begin music/13. Optimistic (Instrumental).mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/13. Optimistic (Instrumental).mp3
+
+#begin music/14. Rain Of That Day (Elzevir Cover).mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/14. Rain Of That Day (Elzevir Cover).mp3
+
+#begin music/15. Dark Energy (Instrumental).mp3
+/importer:Mp3Importer
+/processor:SongProcessor
+/processorParam:Quality=Best
+/build:music/15. Dark Energy (Instrumental).mp3
+

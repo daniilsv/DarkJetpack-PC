@@ -24,7 +24,8 @@ namespace DarkJetpack {
             Terrain = game.Terrain;
         }
 
-        public override void onLoad() {
+        public override void onLoad()
+        {
             scoreFont = game.Content.Load<SpriteFont>(@"ScoreFont");
             backTexs = new List<List<Texture2D>> {
                 new List<Texture2D> { game.Content.Load<Texture2D>(@"Clouds1"), game.Content.Load<Texture2D>(@"Stars1") },
@@ -38,6 +39,7 @@ namespace DarkJetpack {
             cities = new Cities(game.Terrain);
             player = new Player(game, game.Terrain, playerSkinNum);
             enemies = new List<Enemy>();
+            game.changeSong(7,true);
         }
 
         public override void onUnLoad() {
