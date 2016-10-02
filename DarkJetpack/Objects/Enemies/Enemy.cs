@@ -9,6 +9,7 @@ namespace DarkJetpack {
         protected static Random r = new Random();
         protected GameLayout game;
         protected Texture2D texture;
+        public int type = 1;
         protected Vector2 position = Vector2.Zero;
         protected Vector2 speed = Vector2.Zero;
         protected Vector2 direction = Vector2.Zero;
@@ -22,6 +23,10 @@ namespace DarkJetpack {
         }
         public virtual void onLoad() { }
         public virtual void onUnLoad() { }
+
+        public virtual void intersects(Player player) { }
+        public virtual void intersects(Enemy player) { }
+
         public virtual void update(GameTime gameTime) { }
         public void onUpdate(GameTime gameTime) {
             update(gameTime);

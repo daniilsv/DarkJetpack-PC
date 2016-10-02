@@ -5,24 +5,20 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
 namespace DarkJetpack {
-    class Asteroid : Enemy {
-        double lastTime = 0;
-        int num = 0;
-        double rotateSpeed;
-        public Asteroid(GameLayout game, Vector2 pos) : base(game) {
-            speed = new Vector2(1, 1);
+    class LifePoint : Enemy {
+        public LifePoint(GameLayout game, Vector2 pos) : base(game) {
+            speed = new Vector2(0, 0);
             position = pos;
-            num = (int)(r.NextDouble() * 10);
-            rotateSpeed = 150 + r.NextDouble() * 150;
         }
 
         public override void onLoad() {
             texture = game.Terrain;
+            rectTex = new Rectangle(625, 376, 52, 46);
             sizeDraw = new Vector2(52, 52);
         }
 
         public override void intersects(Player player) {
-            player.life--;
+            player.life++;
             type = 0;
         }
         public override void intersects(Enemy enemy) {
@@ -30,14 +26,6 @@ namespace DarkJetpack {
             enemy.type = 0;
         }
 
-        public override void update(GameTime gameTime) {
-            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime > rotateSpeed) {
-                num++;
-                rectTex = new Rectangle(626 + num % 9 * 52, 322, 52, 51);
-                lastTime = gameTime.TotalGameTime.TotalMilliseconds;
-            }
-            direction = new Vector2(0, -1);
-        }
         public override void draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(texture, positionDraw, rectTex, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
         }

@@ -8,14 +8,17 @@ namespace DarkJetpack {
     public class Layout {
         protected DarkJetpack game;
         protected Viewport viewport;
+        public GraphicsDevice GraphicsDevice;
+        public MouseState msState;
+        public KeyboardState kbState;
         protected MouseState oldMsState;
         protected KeyboardState oldKbState;
         protected List<Button> buttons;
         public Point windowBounds;
         private Vector2 targetResolutionScale = Vector2.Zero;
-
         public Layout(DarkJetpack _game) {
             game = _game;
+            GraphicsDevice = game.GraphicsDevice;
             buttons = new List<Button>();
             windowBounds = new Point(game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
         }
@@ -24,9 +27,10 @@ namespace DarkJetpack {
         public virtual void update(GameTime gameTime) { }
         public void onUpdate(GameTime gameTime, Viewport _viewport) {
             viewport = _viewport;
+            msState = Mouse.GetState();
+            kbState = Keyboard.GetState();
             update(gameTime);
 
-            MouseState msState = Mouse.GetState();
             Point mousePosition = new Point(msState.X, msState.Y);
             #region Buttons
             foreach (Button b in buttons) {
@@ -40,9 +44,8 @@ namespace DarkJetpack {
                 b.onUpdate();
             }
             #endregion
-            oldMsState = msState;
 
-            KeyboardState kbState = Keyboard.GetState();
+            oldMsState = msState;
             oldKbState = kbState;
         }
 
@@ -59,6 +62,17 @@ namespace DarkJetpack {
         public virtual void onResume() {
             oldMsState = Mouse.GetState();
             oldKbState = Keyboard.GetState();
+        }
+
+        public bool isButtonPressed(Keys key) {
+            if (kbState.IsKeyDown(key) && !oldKbState.IsKeyDown(key))
+                return true;
+            return false;
+        }
+        public bool isButtonReleased(Keys key) {
+            if (!kbState.IsKeyDown(key) && oldKbState.IsKeyDown(key))
+                return true;
+            return false;
         }
 
         public void addButton(Rectangle bounds, Texture2D texture, Rectangle? texBounds, Func<bool> callback) { buttons.Add(new Button(bounds, texture, texBounds, callback)); }

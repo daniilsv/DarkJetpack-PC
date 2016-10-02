@@ -6,7 +6,8 @@ using System.Collections.Generic;
 namespace DarkJetpack {
     public class Player {
 
-        private Texture2D Texture;      //The image to use
+        private Texture2D texture;      //The image to use
+        public Color[] textureData;
         public Vector2 Position;         //Offset to start drawing our image
         private Vector2 Speed;           //Speed of movement of our parallax effect
         private float Rotation;
@@ -26,7 +27,16 @@ namespace DarkJetpack {
             game = _game;
             Terrain = terrain;
             skinNum = skinN;
-            Texture = game.Content.Load<Texture2D>(@"player");
+            texture = game.Content.Load<Texture2D>(@"player");
+            textureData = new Color[400 * 800];
+            Color[] tmp = new Color[texture.Width * texture.Height];
+            texture.GetData(tmp);
+            int k = 0;
+            for (int j = 0; j < 800; j++)
+                for (int i = skinN * 400; i < skinN * 400 + 400; i++)
+                    textureData[k++] = tmp[i + j * texture.Width];
+            texture = new Texture2D(game.GraphicsDevice, 400, 800);
+            texture.SetData(textureData);
             Position = Vector2.Zero;
             Rotation = 0;
             Speed = new Vector2(1.5f, 1.5f);
@@ -40,7 +50,7 @@ namespace DarkJetpack {
 
             //Store the viewport
             Viewport = viewport;
-            scale = ((float)Viewport.Height / 3 / Texture.Height);
+            scale = ((float)Viewport.Height / 3 / texture.Height);
 
             //Calculate the distance to move our image, based on speed
             Vector2 distance = direction * Speed * elapsed;
@@ -99,8 +109,8 @@ namespace DarkJetpack {
         public void Draw(SpriteBatch spriteBatch) {
             pmF.draw(spriteBatch);
             pmS.draw(spriteBatch);
-            spriteBatch.Draw(Texture, null, Rectangle,
-                new Rectangle(skinNum * 400, 0, 400, 800), null, Rotation, null, Color.White);
+            spriteBatch.Draw(texture, null, Rectangle,
+                new Rectangle(0, 0, 400, 800), null, Rotation, null, Color.White);
             if (DarkJetpack.isDebug)
                 spriteBatch.Draw(DarkJetpack.baseTexture, Rectangle, new Color(Color.DarkKhaki, 0.2f));
         }
