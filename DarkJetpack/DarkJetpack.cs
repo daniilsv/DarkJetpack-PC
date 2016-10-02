@@ -4,11 +4,15 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Storage;
+using System.IO;
 
 namespace DarkJetpack
 {
     public class DarkJetpack : Game
     {
+        public int skin;
+        public Vector2 position;
         public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         public static Texture2D baseTexture;
@@ -33,6 +37,13 @@ namespace DarkJetpack
         }
         protected override void LoadContent()
         {
+            for (int i = 0; i < 6; i++)
+            {
+                if (!(File.Exists("Save" + i + ".sav")))
+                {
+                    SaveGameStorage.SaveHighScores(Vector2.Zero, i);
+                }
+            }
             #region loadMusic
             spriteBatch = new SpriteBatch(GraphicsDevice);
             song[0] = Content.Load<Song>(@"music/01. Epsilon");
@@ -70,7 +81,10 @@ namespace DarkJetpack
             KeyboardState kbState = Keyboard.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kbState.IsKeyDown(Keys.Escape))
+            {
+                SaveGameStorage.SaveHighScores(position, skin);
                 Exit();
+            }
 
             if (kbState.IsKeyDown(Keys.F11))
             {
@@ -134,15 +148,20 @@ namespace DarkJetpack
                     }
                     MediaPlayer.Stop();
                     MediaPlayer.Volume = 1f;
-                    MediaPlayer.Play(song[number]);
+                    MediaPlayer.Play(song[number - 1]);
                 }
                 MediaPlayer.Stop();
-                MediaPlayer.Play(song[number]);
+                MediaPlayer.Play(song[number - 1]);
             }
             else
             {
                 nextSong = number;
             }
+        }
+        public bool exitGame()
+        {
+            this.Exit();
+            return true;
         }
         public bool changeLayoutTo(Layout layoutToChange)
         {

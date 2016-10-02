@@ -4,8 +4,10 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
-namespace DarkJetpack {
-    class MainMenuLayout : Layout {
+namespace DarkJetpack
+{
+    class MainMenuLayout : Layout
+    {
         Texture2D interferenceTexture;
         double lastTime = 0;
         private ParticleMashine particleMashine1, particleMashine2, particleMashine3, particleMashine4, particleMashine5, particleMashine6, particleMashine7;
@@ -13,7 +15,8 @@ namespace DarkJetpack {
         Texture2D playerTexture;
         int playerSkinNum = 0;
         private SpriteFont scoreFont;
-        public MainMenuLayout(DarkJetpack game) : base(game) {
+        public MainMenuLayout(DarkJetpack game) : base(game)
+        {
             particleMashine1 = new ParticleMashine(150, DarkJetpack.baseTexture, null);
             particleMashine2 = new ParticleMashine(150, DarkJetpack.baseTexture, null);
             particleMashine3 = new ParticleMashine(150, DarkJetpack.baseTexture, null);
@@ -23,40 +26,46 @@ namespace DarkJetpack {
             particleMashine7 = new ParticleMashine(150, DarkJetpack.baseTexture, null);
             interferenceTexture = new Texture2D(game.GraphicsDevice, 200, 150);
         }
-        private bool prevPlayerSkin() {
+        private bool prevPlayerSkin()
+        {
             playerSkinNum--;
             if (playerSkinNum == 0)
                 playerSkinNum = 7;
             return true;
         }
-        private bool nextPlayerSkin() {
+        private bool nextPlayerSkin()
+        {
             playerSkinNum++;
             if (playerSkinNum == 7)
                 playerSkinNum = 0;
             return true;
         }
-        public override void onLoad() {
+        public override void onLoad()
+        {
             scoreFont = game.Content.Load<SpriteFont>(@"ScoreFont");
             playerTexture = game.Content.Load<Texture2D>(@"player");
             testw = new Window(new Rectangle(100, 100, windowBounds.X - 200, windowBounds.Y - 200), game.Terrain);
             addButton(new Rectangle(windowBounds.X / 2 - 100, windowBounds.Y - 200, 200, 50), game.Terrain, new Rectangle(429, 321, 123, 41), (() => game.changeLayoutTo(new GameLayout(game, playerSkinNum))));
-
+            addButton(new Rectangle(windowBounds.X - 200, 150, 64, 64), game.Terrain, new Rectangle(730, 376, 51, 52), (() => game.exitGame()));
+            addButton(new Rectangle(150, 150, 64, 64), game.Terrain, new Rectangle(782, 376, 52, 52), (() => game.exitGame()));
             addButton(new Rectangle(windowBounds.X / 2 - 150, windowBounds.Y - 200, 35, 50), game.Terrain, new Rectangle(594, 365, 31, 44), (() => prevPlayerSkin()));
             addButton(new Rectangle(windowBounds.X / 2 + 115, windowBounds.Y - 200, 35, 50), game.Terrain, new Rectangle(594, 321, 31, 44), (() => nextPlayerSkin()));
-
         }
 
-        public override void onUnLoad() {
+        public override void onUnLoad()
+        {
         }
 
-        public override void update(GameTime gameTime) {
+        public override void update(GameTime gameTime)
+        {
             MouseState msState = Mouse.GetState();
             Point mousePosition = new Point(msState.X, msState.Y);
 
             #region Particle Mashine
             int dy = (int)(2.5f * Math.Sin(gameTime.TotalGameTime.TotalMilliseconds / 200));
             Random r = new Random();
-            for (int i = 0; i < 150; i++) {
+            for (int i = 0; i < 150; i++)
+            {
                 ParticleMashine.Particle p1 = particleMashine1.particles[i];
                 ParticleMashine.Particle p2 = particleMashine2.particles[i];
                 ParticleMashine.Particle p3 = particleMashine3.particles[i];
@@ -64,33 +73,40 @@ namespace DarkJetpack {
                 ParticleMashine.Particle p5 = particleMashine5.particles[i];
                 ParticleMashine.Particle p6 = particleMashine6.particles[i];
                 ParticleMashine.Particle p7 = particleMashine7.particles[i];
-                if (p1.l <= 0.1) {
+                if (p1.l <= 0.1)
+                {
                     p1.p = new Vector2(viewport.Width / 2, viewport.Height / 2 - 75); p1.s = 3 + (int)(3 * r.NextDouble()); p1.l = 13;
                     p1.c = Color.Red;
                 }
-                if (p2.l <= 0.1) {
+                if (p2.l <= 0.1)
+                {
                     p2.p = new Vector2(viewport.Width / 2, viewport.Height / 2 - 52); p2.s = 3 + (int)(3 * r.NextDouble()); p2.l = 13;
                     p2.c = Color.Orange;
                 }
-                if (p3.l <= 0.1) {
+                if (p3.l <= 0.1)
+                {
                     p3.p = new Vector2(viewport.Width / 2, viewport.Height / 2 - 25); p3.s = 3 + (int)(3 * r.NextDouble()); p3.l = 13;
                     p3.c = Color.Yellow;
                 }
 
-                if (p4.l <= 0.1) {
+                if (p4.l <= 0.1)
+                {
                     p4.p = new Vector2(viewport.Width / 2, viewport.Height / 2); p4.s = 3 + (int)(3 * r.NextDouble()); p4.l = 13;
                     p4.c = Color.Green;
                 }
 
-                if (p5.l <= 0.1) {
+                if (p5.l <= 0.1)
+                {
                     p5.p = new Vector2(viewport.Width / 2, viewport.Height / 2 + 25); p5.s = 3 + (int)(3 * r.NextDouble()); p5.l = 13;
                     p5.c = Color.DeepSkyBlue;
                 }
-                if (p6.l <= 0.1) {
+                if (p6.l <= 0.1)
+                {
                     p6.p = new Vector2(viewport.Width / 2, viewport.Height / 2 + 50); p6.s = 3 + (int)(3 * r.NextDouble()); p6.l = 13;
                     p6.c = Color.Blue;
                 }
-                if (p7.l <= 0.1) {
+                if (p7.l <= 0.1)
+                {
                     p7.p = new Vector2(viewport.Width / 2, viewport.Height / 2 + 75); p7.s = 3 + (int)(3 * r.NextDouble()); p7.l = 13;
                     p7.c = Color.DarkViolet;
                 }
@@ -141,13 +157,16 @@ namespace DarkJetpack {
             #endregion
 
             #region Interference
-            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime > 100) {
+            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime > 100)
+            {
                 Color[] arr = new Color[200 * 200];
-                for (int i = 0; i < arr.Length; i++) {
+                for (int i = 0; i < arr.Length; i++)
+                {
                     arr[i] = Color.Black;
                 }
                 Random a = new Random();
-                for (int t = 0; t < 10; t++) {
+                for (int t = 0; t < 10; t++)
+                {
                     int y = (int)((interferenceTexture.Height - 3) * a.NextDouble());
                     for (int i = 0; i < interferenceTexture.Width; i++)
                         for (int j = y; j < y + 2; j++)
@@ -159,14 +178,18 @@ namespace DarkJetpack {
             #endregion
 
             KeyboardState kbState = Keyboard.GetState();
-            if (kbState.IsKeyDown(Keys.Enter) && !oldKbState.IsKeyDown(Keys.Enter)) {
+            if (kbState.IsKeyDown(Keys.Enter) && !oldKbState.IsKeyDown(Keys.Enter))
+            {
                 game.changeLayoutTo(new GameLayout(game, playerSkinNum));
-            } else if (oldKbState.IsKeyDown(Keys.Enter)) {
+            }
+            else if (oldKbState.IsKeyDown(Keys.Enter))
+            {
 
             }
         }
 
-        void drawCharacterWindow(SpriteBatch spriteBatch, GameTime gameTime) {
+        void drawCharacterWindow(SpriteBatch spriteBatch, GameTime gameTime)
+        {
             spriteBatch.End();
             spriteBatch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, null, null);
             Texture2D t = game.Terrain;
@@ -204,14 +227,15 @@ namespace DarkJetpack {
             spriteBatch.Draw(interferenceTexture, new Rectangle(b.Left + b.Width / 8 + 7, b.Top + b.Height / 8 + 7, b.Width - 2 * b.Width / 8 - 2, b.Height - 3 * b.Height / 8 - 14), Color.White * 0.2f);
         }
 
-        public override void draw(SpriteBatch spriteBatch, GameTime gameTime) {
+        public override void draw(SpriteBatch spriteBatch, GameTime gameTime)
+        {
             testw.onDraw(spriteBatch, gameTime);
             drawCharacterWindow(spriteBatch, gameTime);
             foreach (Button b in buttons)
                 b.onDraw(spriteBatch, gameTime);
             spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 79, windowBounds.Y - 182), Color.Black, 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
             spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 81, windowBounds.Y - 184), Color.Black, 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
-            spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 80, windowBounds.Y - 183), new Color(255,134,26), 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
+            spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 80, windowBounds.Y - 183), new Color(255, 134, 26), 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
         }
     }
 }

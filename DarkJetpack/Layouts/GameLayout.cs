@@ -39,7 +39,7 @@ namespace DarkJetpack {
             cities = new Cities(game.Terrain);
             player = new Player(game, game.Terrain, playerSkinNum);
             enemies = new List<Enemy>();
-            game.changeSong(7,true);
+            game.changeSong(8,true);
         }
 
         public override void onUnLoad() {
