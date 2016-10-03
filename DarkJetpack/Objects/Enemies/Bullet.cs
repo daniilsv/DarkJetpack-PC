@@ -5,10 +5,10 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
 namespace DarkJetpack {
-    class LifePoint : Enemy {
-        public LifePoint(GameLayout game, Vector2 pos) : base(game) {
-            speed = new Vector2(0, 0);
-            position = pos;
+    class Bullet : Enemy {
+        public Bullet(GameLayout game, Vector2 vel) : base(game) {
+            speed = vel * 20;
+            position = Layout.player.Position;
         }
 
         public override void onLoad() {
@@ -17,10 +17,6 @@ namespace DarkJetpack {
             sizeDraw = new Vector2(52, 52);
         }
 
-        public override void intersects(Player player) {
-            player.life++;
-            type = 0;
-        }
         public override void intersects(Enemy enemy) {
             if (enemy is LifePoint || enemy is Bullet)
                 return;
@@ -28,6 +24,9 @@ namespace DarkJetpack {
             enemy.type = 0;
         }
 
+        public override void update(GameTime gameTime) {
+            direction = new Vector2(1, 1);
+        }
         public override void draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(texture, positionDraw, rectTex, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
         }

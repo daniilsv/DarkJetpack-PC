@@ -13,8 +13,8 @@ namespace DarkJetpack {
         Texture2D playerTexture;
         private SpriteFont scoreFont;
         int score;
-        public GameOverLayout(DarkJetpack game, int sc) : base(game) {
-            score = sc;
+        public GameOverLayout(DarkJetpack game) : base(game) {
+            score = player.score;
             particleMashine = new ParticleMashine(150, DarkJetpack.baseTexture, null);
             interferenceTexture = new Texture2D(game.GraphicsDevice, 200, 150);
         }

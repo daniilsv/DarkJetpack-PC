@@ -34,8 +34,8 @@ namespace DarkJetpack {
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             position += direction * speed * elapsed;
             direction = Vector2.Zero;
-            positionDraw = new Vector2(game.windowBounds.X / 2 - 60 * (game.player.Position.X - position.X),
-                game.windowBounds.Y / 2 + 60 * (game.player.Position.Y - position.Y));
+            positionDraw = new Vector2(game.windowBounds.X / 2 - 60 * (Layout.player.Position.X - position.X),
+                game.windowBounds.Y / 2 + 60 * (Layout.player.Position.Y - position.Y));
         }
 
         public virtual void draw(SpriteBatch spriteBatch) { }

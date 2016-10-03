@@ -50,6 +50,7 @@
     <Compile Include="DarkJetpack.cs" />
     <Compile Include="Objects\Enemies\Enemy.cs" />
     <Compile Include="Objects\Enemies\Asteroid.cs" />
+    <Compile Include="Objects\Enemies\Bullet.cs" />
     <Compile Include="Objects\Enemies\LifePoint.cs" />
     <Compile Include="Objects\ParticleMashine.cs" />
     <Compile Include="Objects\Player.cs" />

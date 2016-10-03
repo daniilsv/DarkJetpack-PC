@@ -10,7 +10,7 @@ namespace DarkJetpack {
         int num = 0;
         double rotateSpeed;
         public Asteroid(GameLayout game, Vector2 pos) : base(game) {
-            speed = new Vector2(1, 1);
+            speed = new Vector2(3 * (float)r.NextDouble(), 1.2f * (float)r.NextDouble());
             position = pos;
             num = (int)(r.NextDouble() * 10);
             rotateSpeed = 150 + r.NextDouble() * 150;
@@ -36,7 +36,7 @@ namespace DarkJetpack {
                 rectTex = new Rectangle(626 + num % 9 * 52, 322, 52, 51);
                 lastTime = gameTime.TotalGameTime.TotalMilliseconds;
             }
-            direction = new Vector2(0, -1);
+            direction = new Vector2(-0.5f + (float)r.NextDouble(), -1);
         }
         public override void draw(SpriteBatch spriteBatch) {
             spriteBatch.Draw(texture, positionDraw, rectTex, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);

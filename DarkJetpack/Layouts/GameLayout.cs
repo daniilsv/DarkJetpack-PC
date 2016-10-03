@@ -8,9 +8,7 @@ namespace DarkJetpack {
     public class GameLayout : Layout {
         double lastTime = 0, lastTime2 = 0;
         List<Background> Backgrounds;
-        public Player player;
         public Texture2D Terrain;
-        int score;
         private SpriteFont scoreFont;
         Cities cities;
         List<Color> colors = new List<Color> { new Color(76, 220, 241), Color.DarkBlue, Color.Gainsboro, Color.CadetBlue, Color.Black };
@@ -24,8 +22,7 @@ namespace DarkJetpack {
             Terrain = game.Terrain;
         }
 
-        public override void onLoad()
-        {
+        public override void onLoad() {
             scoreFont = game.Content.Load<SpriteFont>(@"ScoreFont");
             backTexs = new List<List<Texture2D>> {
                 new List<Texture2D> { game.Content.Load<Texture2D>(@"Clouds1"), game.Content.Load<Texture2D>(@"Stars1") },
@@ -37,9 +34,9 @@ namespace DarkJetpack {
             Backgrounds.Add(new Background(new Vector2(400, 400), 0.8f));
             Backgrounds.Add(new Background(new Vector2(700, 700), 1.1f));
             cities = new Cities(game.Terrain);
-            player = new Player(game, game.Terrain, playerSkinNum);
             enemies = new List<Enemy>();
-            game.changeSong(8,true);
+            game.changeSong(8, true);
+            player.start();
         }
 
         public override void onUnLoad() {
@@ -51,24 +48,29 @@ namespace DarkJetpack {
                 onBackPressed();
             }
 
+            if (isMousePressed()) {
+                Point p = msState.Position;
+                Vector2 v = new Vector2(p.X - windowBounds.X / 2, windowBounds.Y / 2 - p.Y);
+                v.Normalize();
+                enemies.Add(new Bullet(this, v));
+            }
+
             Vector2 direction = Vector2.Zero;
-            if (kbState.IsKeyDown(Keys.Up))
+            if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
                 direction = new Vector2(0, -1);
-            else if (kbState.IsKeyDown(Keys.Down) && player.Position.Y >= 0) {
+            else if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down) && player.Position.Y >= 0) {
                 direction = new Vector2(0, 1);
             }
 
-            if (kbState.IsKeyDown(Keys.Left))
+            if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
                 direction += new Vector2(-1, 0);
-            else if (kbState.IsKeyDown(Keys.Right))
+            else if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
                 direction += new Vector2(1, 0);
 
-            if (kbState.IsKeyDown(Keys.LeftShift))
+            if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
                 direction *= 3;
 
             player.Update(gameTime, direction, viewport);
-            score = Math.Max(score, (int)(player.Position.Y * 10));
-
             #region Background
 
             #region Color
@@ -134,6 +136,10 @@ namespace DarkJetpack {
                             enemies.RemoveAt(j);
                             j--;
                         }
+                        if (enm1.type == 0) {
+                            enemies.RemoveAt(i);
+                            i--;
+                        }
                     }
                 }
             }
@@ -141,7 +147,7 @@ namespace DarkJetpack {
 
             #region Adding
             Random r = new Random();
-            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime > 500 + 2000 * r.NextDouble()) {
+            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime > 750 + 2000 * r.NextDouble()) {
                 for (int i = 0; i < 3 * r.NextDouble(); i++)
                     enemies.Add(new Asteroid(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
                 lastTime = gameTime.TotalGameTime.TotalMilliseconds;
@@ -158,7 +164,7 @@ namespace DarkJetpack {
 
             if (player.life <= 0) {
                 game.changeLayoutBack();
-                game.changeLayoutTo(new GameOverLayout(game, score));
+                game.changeLayoutTo(new GameOverLayout(game));
             }
         }
 
@@ -176,11 +182,22 @@ namespace DarkJetpack {
                 enm.Draw(spriteBatch);
 
             player.Draw(spriteBatch);
-            spriteBatch.DrawString(scoreFont, player.Position + "", new Vector2(10, 10), Color.Red, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+            spriteBatch.DrawString(scoreFont, player.Position + "", new Vector2(10, 10), Color.Red, 0,
+                Vector2.Zero, 1, SpriteEffects.None, 1);
             for (int i = 0; i < player.life; i++)
-                spriteBatch.Draw(Terrain, new Vector2(50 + 50 * i, 50), null, new Rectangle(625, 376, 51, 46), Vector2.Zero, 0, new Vector2(0.8f));
-            spriteBatch.Draw(Terrain, new Vector2(windowBounds.X - 102, 50), null, new Rectangle(677, 376, 52, 46), Vector2.Zero, 0);
-            spriteBatch.DrawString(scoreFont, score + "", new Vector2(windowBounds.X / 2 - 20, 50), Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 1);
+                spriteBatch.Draw(Terrain, new Vector2(50 + 50 * i, 50), null, new Rectangle(625, 376, 51, 46),
+                    Vector2.Zero, 0, new Vector2(0.8f));
+            spriteBatch.Draw(Terrain, new Vector2(windowBounds.X - 102, 50), null, new Rectangle(677, 376, 52, 46),
+                Vector2.Zero, 0);
+
+            if (player.score < player.highscore) {
+                spriteBatch.DrawString(scoreFont, player.score + "", new Vector2(windowBounds.X / 2 - 30, 50),
+                    Color.Red, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 1);
+                spriteBatch.DrawString(scoreFont, "HS: " + player.highscore, new Vector2(2 * windowBounds.X / 3, 50),
+                    Color.OrangeRed, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 1);
+            } else
+                spriteBatch.DrawString(scoreFont, player.score + "", new Vector2(windowBounds.X / 2 - 20, 50),
+                    Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 1);
         }
     }
 }

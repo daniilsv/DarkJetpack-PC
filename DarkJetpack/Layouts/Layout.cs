@@ -15,13 +15,15 @@ namespace DarkJetpack {
         protected KeyboardState oldKbState;
         protected List<Button> buttons;
         public Point windowBounds;
-        private Vector2 targetResolutionScale = Vector2.Zero;
+        public static Player player = null;
         public Layout(DarkJetpack _game) {
             game = _game;
             GraphicsDevice = game.GraphicsDevice;
             buttons = new List<Button>();
             windowBounds = new Point(game.GraphicsDevice.Viewport.Width, game.GraphicsDevice.Viewport.Height);
+            player = (player == null) ? new Player(game, game.Terrain) : player;
         }
+
         public virtual void onLoad() { }
         public virtual void onUnLoad() { }
         public virtual void update(GameTime gameTime) { }
@@ -48,7 +50,6 @@ namespace DarkJetpack {
             oldMsState = msState;
             oldKbState = kbState;
         }
-
         public virtual void draw(SpriteBatch spriteBatch, GameTime gameTime) { }
         public void onDraw(SpriteBatch spriteBatch, GameTime gameTime) {
             draw(spriteBatch, gameTime);
@@ -73,6 +74,13 @@ namespace DarkJetpack {
             if (!kbState.IsKeyDown(key) && oldKbState.IsKeyDown(key))
                 return true;
             return false;
+        }
+
+        public bool isMousePressed() {
+            return oldMsState.LeftButton == ButtonState.Released && msState.LeftButton == ButtonState.Pressed;
+        }
+        public bool isMouseReleased() {
+            return oldMsState.LeftButton == ButtonState.Pressed && msState.LeftButton == ButtonState.Released;
         }
 
         public void addButton(Rectangle bounds, Texture2D texture, Rectangle? texBounds, Func<bool> callback) { buttons.Add(new Button(bounds, texture, texBounds, callback)); }
