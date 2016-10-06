@@ -44,7 +44,6 @@ namespace DarkJetpack {
             testw = new Window(new Rectangle(100, 100, windowBounds.X - 200, windowBounds.Y - 200), game.Terrain);
             addButton(new Rectangle(windowBounds.X / 2 - 100, windowBounds.Y - 200, 200, 50), game.Terrain, new Rectangle(429, 321, 123, 41), (() => game.changeLayoutTo(new GameLayout(game, playerSkinNum))));
             addButton(new Rectangle(windowBounds.X - 200, 150, 64, 64), game.Terrain, new Rectangle(730, 376, 51, 52), (() => game.exitGame()));
-            addButton(new Rectangle(150, 150, 64, 64), game.Terrain, new Rectangle(782, 376, 52, 52), (() => game.exitGame()));
             addButton(new Rectangle(windowBounds.X / 2 - 150, windowBounds.Y - 200, 35, 50), game.Terrain, new Rectangle(594, 365, 31, 44), (() => prevPlayerSkin()));
             addButton(new Rectangle(windowBounds.X / 2 + 115, windowBounds.Y - 200, 35, 50), game.Terrain, new Rectangle(594, 321, 31, 44), (() => nextPlayerSkin()));
         }
@@ -199,11 +198,14 @@ namespace DarkJetpack {
             particleMashine2.draw(spriteBatch);
             particleMashine3.draw(spriteBatch);
             particleMashine4.draw(spriteBatch);
-            particleMashine5.draw(spriteBatch);
             particleMashine6.draw(spriteBatch);
             particleMashine7.draw(spriteBatch);
-            spriteBatch.Draw(playerTexture, null, new Rectangle(viewport.Width / 2 - viewport.Width / 24 + 5, viewport.Height / 2 - viewport.Height / 8 + dy, viewport.Width / 12, viewport.Height / 4),
-                new Rectangle(playerSkinNum * 400, 0, 400, 800), null, 0, null, Color.White);
+            if (player.unlocked)
+                spriteBatch.Draw(playerTexture, null, new Rectangle(viewport.Width / 2 - viewport.Width / 24 + 5, viewport.Height / 2 - viewport.Height / 8 + dy, viewport.Width / 12, viewport.Height / 4),
+                    new Rectangle(playerSkinNum * 400, 0, 400, 800), null, 0, null, Color.White);
+            else
+                spriteBatch.Draw(playerTexture, null, new Rectangle(viewport.Width / 2 - viewport.Width / 24 + 5, viewport.Height / 2 - viewport.Height / 8 + dy, viewport.Width / 12, viewport.Height / 4),
+                    new Rectangle(playerSkinNum * 400, 0, 400, 800), null, 0, null, Color.Black);
             spriteBatch.Draw(interferenceTexture, new Rectangle(b.Left + b.Width / 8 + 7, b.Top + b.Height / 8 + 7, b.Width - 2 * b.Width / 8 - 2, b.Height - 3 * b.Height / 8 - 14), Color.White * 0.2f);
         }
 
@@ -215,6 +217,7 @@ namespace DarkJetpack {
             spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 79, windowBounds.Y - 182), Color.Black, 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
             spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 81, windowBounds.Y - 184), Color.Black, 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
             spriteBatch.DrawString(scoreFont, "Start Game", new Vector2(windowBounds.X / 2 - 80, windowBounds.Y - 183), new Color(255, 134, 26), 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
+            spriteBatch.DrawString(scoreFont, player.highscore + "/" + (playerSkinNum * 5000 * 40 / 56), new Vector2(windowBounds.X / 2-windowBounds.X/40, windowBounds.Y/3-20), new Color(255, 134, 26), 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
         }
     }
 }

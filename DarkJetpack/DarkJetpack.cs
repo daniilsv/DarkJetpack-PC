@@ -8,6 +8,7 @@ using System.IO;
 
 namespace DarkJetpack {
     public class DarkJetpack : Game {
+        public bool[] unlocked = new bool[7];
         public int skin;
         public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
@@ -32,11 +33,14 @@ namespace DarkJetpack {
             graphics.ApplyChanges();
         }
         protected override void LoadContent() {
-            for (int i = 0; i < 8; i++)
-                if (!(File.Exists("Save" + i + ".sav")))
-                    SaveGameStorage.SaveHighScores(0, i);
+            for (int i = 0; i < 7; i++) {
+                if (!(File.Exists("Save" + i + ".sav")) && i != 0) {
+                    SaveGameStorage.SaveData(0, i, false);
+                } else if (i == 0) {
+                    SaveGameStorage.SaveData(0, i, true);
+                }
+            }
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            /*
             #region LoadMusic
             song[0] = Content.Load<Song>(@"music/01. Epsilon");
             song[1] = Content.Load<Song>(@"music/02. Game Not Over");
@@ -54,7 +58,6 @@ namespace DarkJetpack {
             song[13] = Content.Load<Song>(@"music/14. Rain Of That Day (Elzevir Cover)");
             song[14] = Content.Load<Song>(@"music/15. Dark Energy (Instrumental)");
             #endregion
-            */
             baseTexture = new Texture2D(GraphicsDevice, 1, 1);
             baseTexture.SetData(new Color[] { Color.White });
             Terrain = Content.Load<Texture2D>(@"Terrain");
@@ -72,7 +75,7 @@ namespace DarkJetpack {
             KeyboardState kbState = Keyboard.GetState();
 
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kbState.IsKeyDown(Keys.Escape)) {
-                SaveGameStorage.SaveHighScores(Layout.player.highscore, skin);
+                SaveGameStorage.SaveData(Layout.player.highscore, skin, unlocked[skin]);
                 Exit();
             }
 
@@ -85,7 +88,6 @@ namespace DarkJetpack {
             }
 
             curLayout.onUpdate(gameTime, GraphicsDevice.Viewport);
-            /*
             if (MediaPlayer.State != MediaState.Playing) {
                 if (nextSong == 0) {
                     Random rnd = new Random();
@@ -95,7 +97,6 @@ namespace DarkJetpack {
                     nextSong = 0;
                 }
             }
-            */
             base.Update(gameTime);
         }
 
@@ -119,6 +120,7 @@ namespace DarkJetpack {
             spriteBatch.End();
             base.Draw(gameTime);
         }
+
         public void changeSong(int number, bool stopCurrent = false, bool withFade = false) {
             if (stopCurrent) {
                 if (withFade) {

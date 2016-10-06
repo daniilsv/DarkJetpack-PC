@@ -12,6 +12,7 @@ namespace DarkJetpack {
         private float Rotation;
         private Viewport Viewport;      //Our game viewport
         private float scale;
+        public bool unlocked = false;
         public int highscore;
         public int score;
         private ParticleMashine pmS, pmF;
@@ -22,7 +23,7 @@ namespace DarkJetpack {
                 return new Rectangle(Viewport.Width / 2 - Viewport.Width / 18, Viewport.Height / 2 - Viewport.Height / 6, Viewport.Width / 9, Viewport.Height / 3);
             }
         }
-        int skinNum;
+        public int skinNum;
         Texture2D Terrain;
         public Player(DarkJetpack _game, Texture2D terrain) {
             game = _game;
@@ -37,7 +38,10 @@ namespace DarkJetpack {
 
         public void setSkin(int skinN) {
             skinNum = skinN;
-            highscore = SaveGameStorage.LoadHighScores(skinNum);
+            data d = SaveGameStorage.LoadData(skinN);
+
+            unlocked = d.unlocked;
+            highscore = d.highscore;
         }
         public void start() {
             Position = Vector2.Zero;
@@ -67,7 +71,10 @@ namespace DarkJetpack {
                 Rotation -= Math.Sign(Rotation) * 0.025f;
             }
             */
+            if (score >= skinNum * 5000 * 40 / 56) {
+                game.unlocked[skinNum + 1] = true;
 
+            }
             #region Particle Mashine
             Random r = new Random();
             for (int i = 0; i < pmS.count; i++) {
@@ -82,7 +89,7 @@ namespace DarkJetpack {
 
                 ps.p.X += ps.v.X; ps.p.Y += ps.v.Y;
                 ps.v.X = -10 + 20 * (float)r.NextDouble() - 10 * direction.X * (float)r.NextDouble();
-                ps.v.Y = 5 + 2*direction.Y * (float)r.NextDouble();
+                ps.v.Y = 5 + 2 * direction.Y * (float)r.NextDouble();
                 ps.l -= (float)r.NextDouble();
                 pmS.particles[i] = ps;
             }

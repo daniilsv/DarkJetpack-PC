@@ -23,6 +23,7 @@ namespace DarkJetpack {
             playerTexture = game.Content.Load<Texture2D>(@"player");
             testw = new Window(new Rectangle(100, 100, windowBounds.X - 200, windowBounds.Y - 200), game.Terrain);
             addButton(new Rectangle(windowBounds.X / 2 - 100, windowBounds.Y - 200, 200, 50), game.Terrain, new Rectangle(429, 321, 123, 41), (() => game.changeLayoutBack()));
+            SaveGameStorage.SaveData(score, player.skinNum, game.unlocked[player.skinNum]);
         }
 
         public override void onUnLoad() {

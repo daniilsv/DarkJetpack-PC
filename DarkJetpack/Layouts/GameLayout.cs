@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
-namespace DarkJetpack {
+namespace DarkJetpack {//Дай я напишу одно сообщение в вк с твоей стр. Ну чо Жанне только Ёжик в любви признался. Надо больше людей.
     public class GameLayout : Layout {
         double lastTime = 0, lastTime2 = 0;
         List<Background> Backgrounds;
