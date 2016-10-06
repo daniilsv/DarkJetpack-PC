@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
 namespace DarkJetpack {
@@ -17,13 +16,13 @@ namespace DarkJetpack {
             score = player.score;
             particleMashine = new ParticleMashine(150, DarkJetpack.baseTexture, null);
             interferenceTexture = new Texture2D(game.GraphicsDevice, 200, 150);
+            SaveGameStorage.SaveData(score, player.skinNum, game.unlocked[player.skinNum]);
         }
         public override void onLoad() {
             scoreFont = game.Content.Load<SpriteFont>(@"ScoreFont");
             playerTexture = game.Content.Load<Texture2D>(@"player");
             testw = new Window(new Rectangle(100, 100, windowBounds.X - 200, windowBounds.Y - 200), game.Terrain);
             addButton(new Rectangle(windowBounds.X / 2 - 100, windowBounds.Y - 200, 200, 50), game.Terrain, new Rectangle(429, 321, 123, 41), (() => game.changeLayoutBack()));
-            SaveGameStorage.SaveData(score, player.skinNum, game.unlocked[player.skinNum]);
         }
 
         public override void onUnLoad() {

@@ -13,8 +13,8 @@ namespace DarkJetpack {
 
         public override void onLoad() {
             texture = game.Terrain;
-            rectTex = new Rectangle(625, 376, 52, 46);
-            sizeDraw = new Vector2(52, 52);
+            rectTex = new Rectangle(246, 321, 120, 120);
+            sizeDraw = new Vector2(32, 32);
         }
 
         public override void intersects(Enemy enemy) {
@@ -28,7 +28,7 @@ namespace DarkJetpack {
             direction = new Vector2(1, 1);
         }
         public override void draw(SpriteBatch spriteBatch) {
-            spriteBatch.Draw(texture, positionDraw, rectTex, Color.White, 0, Vector2.Zero, 1, SpriteEffects.None, 1);
+            spriteBatch.Draw(texture, null, rectDraw, rectTex, null, 0, null, Color.White);
         }
 
     }

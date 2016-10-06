@@ -16,7 +16,8 @@ namespace DarkJetpack {
         protected Vector2 positionDraw = Vector2.Zero;
         protected Vector2 sizeDraw = Vector2.Zero;
         protected Rectangle rectTex = Rectangle.Empty;
-        public Rectangle rectDraw { get { return new Rectangle((int)positionDraw.X, (int)positionDraw.Y, (int)sizeDraw.X, (int)sizeDraw.Y); } }
+        public Rectangle rectCollide;
+        public Rectangle rectDraw { get { return new Rectangle((int)(positionDraw.X - sizeDraw.X / 2), (int)(positionDraw.Y - sizeDraw.Y / 2), (int)sizeDraw.X / 2, (int)sizeDraw.Y / 2); } }
         public Enemy(GameLayout _game) {
             game = _game;
             onLoad();
@@ -29,6 +30,7 @@ namespace DarkJetpack {
 
         public virtual void update(GameTime gameTime) { }
         public void onUpdate(GameTime gameTime) {
+            rectCollide = new Rectangle(rectDraw.X + rectDraw.Width / 6, rectDraw.Y + rectDraw.Height / 6, 2 * rectDraw.Width / 3, 2 * rectDraw.Height / 3);
             update(gameTime);
 
             float elapsed = (float)gameTime.ElapsedGameTime.TotalSeconds;
@@ -42,7 +44,7 @@ namespace DarkJetpack {
         public void Draw(SpriteBatch spriteBatch) {
             draw(spriteBatch);
             if (DarkJetpack.isDebug)
-                spriteBatch.Draw(DarkJetpack.baseTexture, rectDraw, new Color(Color.DarkKhaki, 0.2f));
+                spriteBatch.Draw(DarkJetpack.baseTexture, rectCollide, new Color(Color.DarkKhaki, 0.2f));
         }
     }
 }

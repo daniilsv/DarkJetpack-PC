@@ -2,15 +2,13 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System.IO;
 
 namespace DarkJetpack {
     public class DarkJetpack : Game {
-        public bool[] unlocked = new bool[7];
-        public int skin;
         public GraphicsDeviceManager graphics;
+        public bool[] unlocked = new bool[7];
         SpriteBatch spriteBatch;
         public static Texture2D baseTexture;
         Layout curLayout;
@@ -20,28 +18,34 @@ namespace DarkJetpack {
         private int nextSong = 0;
         public Texture2D Terrain;
         public static bool isDebug = false;
-
+        public static SpriteFont baseFont;
         public DarkJetpack() : base() {
             IsMouseVisible = true;
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             layoutBackStack = new Stack<Layout>();
-            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 200;
-            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
-            Window.Position = new Point(50, 10);
+            graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+            Window.Position = new Point(0, 0);
             //graphics.IsFullScreen = true;
             graphics.ApplyChanges();
         }
         protected override void LoadContent() {
             for (int i = 0; i < 7; i++) {
-                if (!(File.Exists("Save" + i + ".sav")) && i != 0) {
+                if (!(File.Exists("Save" + i + ".sav")) && i != 0)
                     SaveGameStorage.SaveData(0, i, false);
-                } else if (i == 0) {
+                else if (i == 0)
                     SaveGameStorage.SaveData(0, i, true);
-                }
             }
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+
+            baseTexture = new Texture2D(GraphicsDevice, 1, 1);
+            baseTexture.SetData(new Color[] { Color.White });
+            Terrain = Content.Load<Texture2D>(@"Terrain");
+
             #region LoadMusic
+            /*
             song[0] = Content.Load<Song>(@"music/01. Epsilon");
             song[1] = Content.Load<Song>(@"music/02. Game Not Over");
             song[2] = Content.Load<Song>(@"music/03. Dead Space");
@@ -57,37 +61,25 @@ namespace DarkJetpack {
             song[12] = Content.Load<Song>(@"music/13. Optimistic (Instrumental)");
             song[13] = Content.Load<Song>(@"music/14. Rain Of That Day (Elzevir Cover)");
             song[14] = Content.Load<Song>(@"music/15. Dark Energy (Instrumental)");
+            */
             #endregion
-            baseTexture = new Texture2D(GraphicsDevice, 1, 1);
-            baseTexture.SetData(new Color[] { Color.White });
-            Terrain = Content.Load<Texture2D>(@"Terrain");
 
             changeLayoutTo(new MainMenuLayout(this));
 
             backColor = new Color(76, 220, 241);
+            baseFont = Content.Load<SpriteFont>(@"ScoreFont");
         }
 
         protected override void UnloadContent() {
             curLayout.onUnLoad();
+            Content.Unload();
         }
 
         protected override void Update(GameTime gameTime) {
-            KeyboardState kbState = Keyboard.GetState();
-
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || kbState.IsKeyDown(Keys.Escape)) {
-                SaveGameStorage.SaveData(Layout.player.highscore, skin, unlocked[skin]);
-                Exit();
-            }
-
-            if (kbState.IsKeyDown(Keys.F11)) {
-                graphics.IsFullScreen = !graphics.IsFullScreen;
-                graphics.ApplyChanges();
-            }
-            if (kbState.IsKeyDown(Keys.F8)) {
-                isDebug = !isDebug;
-            }
-
             curLayout.onUpdate(gameTime, GraphicsDevice.Viewport);
+
+            #region Music
+            /*
             if (MediaPlayer.State != MediaState.Playing) {
                 if (nextSong == 0) {
                     Random rnd = new Random();
@@ -97,6 +89,9 @@ namespace DarkJetpack {
                     nextSong = 0;
                 }
             }
+            */
+            #endregion
+
             base.Update(gameTime);
         }
 
@@ -137,10 +132,14 @@ namespace DarkJetpack {
                 nextSong = number;
             }
         }
+
         public bool exitGame() {
+            for (int i = 0; i < 7; i++)
+                SaveGameStorage.SaveData(Layout.player.highscore, i, unlocked[i]);
             this.Exit();
             return true;
         }
+
         public bool changeLayoutTo(Layout layoutToChange) {
             if (layoutToChange == null)
                 return false;

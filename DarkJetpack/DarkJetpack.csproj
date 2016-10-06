@@ -48,6 +48,9 @@
     <Compile Include="Objects\Cities.cs" />
     <Compile Include="Objects\Background.cs" />
     <Compile Include="DarkJetpack.cs" />
+    <Compile Include="Objects\Enemies\BigBoss.cs" />
+    <Compile Include="Objects\Enemies\MonsterBig.cs" />
+    <Compile Include="Objects\Enemies\MonsterMini.cs" />
     <Compile Include="Objects\Enemies\Enemy.cs" />
     <Compile Include="Objects\Enemies\Asteroid.cs" />
     <Compile Include="Objects\Enemies\Bullet.cs" />

@@ -4,26 +4,29 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework.Input;
 
-namespace DarkJetpack {//Дай я напишу одно сообщение в вк с твоей стр. Ну чо Жанне только Ёжик в любви признался. Надо больше людей.
+namespace DarkJetpack {
     public class GameLayout : Layout {
-        double lastTime = 0, lastTime2 = 0;
+        double lastTime = 0, lastTime2 = 0, lastTime3 = 0, lastTime4 = 0, lastTime5 = 0;
         List<Background> Backgrounds;
         public Texture2D Terrain;
-        private SpriteFont scoreFont;
         Cities cities;
         List<Color> colors = new List<Color> { new Color(76, 220, 241), Color.DarkBlue, Color.Gainsboro, Color.CadetBlue, Color.Black };
 
         List<List<Texture2D>> backTexs;
 
         List<Enemy> enemies;
+        public List<Enemy> postEnemiesAdd;
+
         int playerSkinNum;
+        int bossLevel = 1;
+        Window testw;
+        bool isPause = false;
         public GameLayout(DarkJetpack game, int playerSkinN) : base(game) {
             playerSkinNum = playerSkinN;
             Terrain = game.Terrain;
         }
 
         public override void onLoad() {
-            scoreFont = game.Content.Load<SpriteFont>(@"ScoreFont");
             backTexs = new List<List<Texture2D>> {
                 new List<Texture2D> { game.Content.Load<Texture2D>(@"Clouds1"), game.Content.Load<Texture2D>(@"Stars1") },
                 new List<Texture2D> { game.Content.Load<Texture2D>(@"Clouds2"), game.Content.Load<Texture2D>(@"Stars2") },
@@ -35,7 +38,9 @@ namespace DarkJetpack {//Дай я напишу одно сообщение в �
             Backgrounds.Add(new Background(new Vector2(700, 700), 1.1f));
             cities = new Cities(game.Terrain);
             enemies = new List<Enemy>();
+            postEnemiesAdd = new List<Enemy>();
             game.changeSong(8, true);
+            testw = new Window(new Rectangle(windowBounds.X / 6, windowBounds.Y / 6, windowBounds.X - windowBounds.X / 3, windowBounds.Y - windowBounds.Y / 3), game.Terrain);
             player.start();
         }
 
@@ -44,21 +49,20 @@ namespace DarkJetpack {//Дай я напишу одно сообщение в �
         }
 
         public override void update(GameTime gameTime) {
-            if (isButtonPressed(Keys.Space)) {
-                onBackPressed();
+            if (isButtonPressed(Keys.Escape))
+                isPause = !isPause;
+
+            if (isPause) {
+
+                return;
             }
 
-            if (isMousePressed()) {
-                Point p = msState.Position;
-                Vector2 v = new Vector2(p.X - windowBounds.X / 2, windowBounds.Y / 2 - p.Y);
-                v.Normalize();
-                enemies.Add(new Bullet(this, v));
-            }
+            #region Player update
 
             Vector2 direction = Vector2.Zero;
             if (kbState.IsKeyDown(Keys.W) || kbState.IsKeyDown(Keys.Up))
                 direction = new Vector2(0, -1);
-            else if (kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down) && player.Position.Y >= 0) {
+            else if ((kbState.IsKeyDown(Keys.S) || kbState.IsKeyDown(Keys.Down)) && player.Position.Y >= 0) {
                 direction = new Vector2(0, 1);
             }
 
@@ -71,6 +75,22 @@ namespace DarkJetpack {//Дай я напишу одно сообщение в �
                 direction *= 3;
 
             player.Update(gameTime, direction, viewport);
+
+            if (msState.LeftButton == ButtonState.Pressed && gameTime.TotalGameTime.TotalMilliseconds - lastTime4 > 500) {
+                Point p = msState.Position;
+                Vector2 v = new Vector2(p.X - windowBounds.X / 2, windowBounds.Y / 2 - p.Y) + 5 * direction;
+                v.Normalize();
+                enemies.Add(new Bullet(this, v));
+                lastTime4 = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+
+            if (player.life <= 0) {
+                game.changeLayoutBack();
+                game.changeLayoutTo(new GameOverLayout(game));
+            }
+
+            #endregion
+
             #region Background
 
             #region Color
@@ -108,19 +128,18 @@ namespace DarkJetpack {//Дай я напишу одно сообщение в �
 
             foreach (Enemy enm in enemies)
                 enm.onUpdate(gameTime);
-
             #region Intersection
             for (int i = 0; i < enemies.Count - 1; i++) {
                 Enemy enm1 = enemies[i];
-                if (enm1.rectDraw.Top > viewport.Height * 2) {
+                if (enm1.rectDraw.Top > viewport.Height * 2 && i >= 0) {
                     enemies.RemoveAt(i);
                     i--; continue;
                 }
-                if (enm1.rectDraw.Intersects(player.Rectangle)) {
-                    if (enm1 is LifePoint && player.life >= 7)
+                if (enm1.rectCollide.Intersects(player.RectangleCollide)) {
+                    if (enm1 is LifePoint && player.life >= 5)
                         continue;
                     enm1.intersects(player);
-                    if (enm1.type == 0) {
+                    if (enm1.type == 0 && i >= 0) {
                         enemies.RemoveAt(i);
                         i--;
                     }
@@ -130,13 +149,13 @@ namespace DarkJetpack {//Дай я напишу одно сообщение в �
                 for (int j = i + 1; j < enemies.Count; j++) {
                     Enemy enm2 = enemies[j];
                     if (enm2 == null) continue;
-                    if (enm1.rectDraw.Intersects(enm2.rectDraw)) {
+                    if (enm1.rectCollide.Intersects(enm2.rectCollide)) {
                         enm1.intersects(enm2);
-                        if (enm2.type == 0) {
+                        if (enm2.type == 0 && j >= 0) {
                             enemies.RemoveAt(j);
                             j--;
                         }
-                        if (enm1.type == 0) {
+                        if (enm1.type == 0 && i >= 0) {
                             enemies.RemoveAt(i);
                             i--;
                         }
@@ -147,25 +166,38 @@ namespace DarkJetpack {//Дай я напишу одно сообщение в �
 
             #region Adding
             Random r = new Random();
-            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime > 750 + 2000 * r.NextDouble()) {
-                for (int i = 0; i < 3 * r.NextDouble(); i++)
-                    enemies.Add(new Asteroid(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
-                lastTime = gameTime.TotalGameTime.TotalMilliseconds;
-            }
 
             if (gameTime.TotalGameTime.TotalMilliseconds - lastTime2 > 15000) {
-                if (player.life < 7)
+                if (player.life < 5)
                     enemies.Add(new LifePoint(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
                 lastTime2 = gameTime.TotalGameTime.TotalMilliseconds;
             }
-            #endregion
-
-            #endregion
-
-            if (player.life <= 0) {
-                game.changeLayoutBack();
-                game.changeLayoutTo(new GameOverLayout(game));
+            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime > 750 + 2000 * r.NextDouble()) {
+                for (int i = 0; i < 1 + 3 * r.NextDouble(); i++)
+                    enemies.Add(new Asteroid(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
+                lastTime = gameTime.TotalGameTime.TotalMilliseconds;
             }
+            if (player.score > 750)
+                if (gameTime.TotalGameTime.TotalMilliseconds - lastTime3 > 1500 + 3000 * r.NextDouble()) {
+                    for (int i = 0; i < 2; i++)
+                        enemies.Add(new MonsterMini(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
+                    lastTime3 = gameTime.TotalGameTime.TotalMilliseconds;
+                }
+            if (player.score > 900)
+                if (gameTime.TotalGameTime.TotalMilliseconds - lastTime5 > 1250 + 3500 * r.NextDouble()) {
+                    enemies.Add(new MonsterBig(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
+                lastTime5 = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+            enemies.AddRange(postEnemiesAdd);
+            postEnemiesAdd = new List<Enemy>();
+            if (player.score >= bossLevel * 1100) {
+                bossLevel++;
+                enemies.Add(new BigBoss(this, new Vector2(player.Position.X, player.Position.Y + windowBounds.Y / 100)));
+            }
+            #endregion
+
+            #endregion
+
         }
 
         public void ChangeColor(int endColor, float pc) {
@@ -173,31 +205,46 @@ namespace DarkJetpack {//Дай я напишу одно сообщение в �
         }
 
         public override void draw(SpriteBatch spriteBatch, GameTime gameTime) {
+            if (player.Position.Y < 25)
+                cities.Draw(spriteBatch);
             foreach (Background bg in Backgrounds)
                 bg.Draw(spriteBatch);
-            cities.Draw(spriteBatch);
-
 
             foreach (Enemy enm in enemies)
                 enm.Draw(spriteBatch);
 
             player.Draw(spriteBatch);
-            spriteBatch.DrawString(scoreFont, player.Position + "", new Vector2(10, 10), Color.Red, 0,
-                Vector2.Zero, 1, SpriteEffects.None, 1);
             for (int i = 0; i < player.life; i++)
                 spriteBatch.Draw(Terrain, new Vector2(50 + 50 * i, 50), null, new Rectangle(625, 376, 51, 46),
                     Vector2.Zero, 0, new Vector2(0.8f));
-            spriteBatch.Draw(Terrain, new Vector2(windowBounds.X - 102, 50), null, new Rectangle(677, 376, 52, 46),
-                Vector2.Zero, 0);
 
+            #region Score
             if (player.score < player.highscore) {
-                spriteBatch.DrawString(scoreFont, player.score + "", new Vector2(windowBounds.X / 2 - 30, 50),
+                spriteBatch.DrawString(DarkJetpack.baseFont, player.score + "", new Vector2(windowBounds.X / 2 - 30, 50),
                     Color.Red, 0, Vector2.Zero, 1.5f, SpriteEffects.None, 1);
-                spriteBatch.DrawString(scoreFont, "HS: " + player.highscore, new Vector2(2 * windowBounds.X / 3, 50),
+                spriteBatch.DrawString(DarkJetpack.baseFont, "HS: " + player.highscore, new Vector2(2 * windowBounds.X / 3, 50),
                     Color.OrangeRed, 0, Vector2.Zero, 1.2f, SpriteEffects.None, 1);
             } else
-                spriteBatch.DrawString(scoreFont, player.score + "", new Vector2(windowBounds.X / 2 - 20, 50),
+                spriteBatch.DrawString(DarkJetpack.baseFont, player.score + "", new Vector2(windowBounds.X / 2 - 20, 50),
                     Color.Red, 0, Vector2.Zero, 2, SpriteEffects.None, 1);
+
+            #endregion
+
+            #region Pause
+            if (isPause) {
+                testw.onDraw(spriteBatch, gameTime);
+                foreach (Button b in buttons)
+                    b.onDraw(spriteBatch, gameTime);
+            }
+            #endregion
+
+            #region Debug
+            if (DarkJetpack.isDebug) {
+                spriteBatch.DrawString(DarkJetpack.baseFont, player.Position + "", new Vector2(10, 10), Color.Red, 0,
+                    Vector2.Zero, 1, SpriteEffects.None, 1);
+
+            }
+            #endregion
         }
     }
 }

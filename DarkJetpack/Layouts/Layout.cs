@@ -47,6 +47,10 @@ namespace DarkJetpack {
             }
             #endregion
 
+            if (isButtonPressed(Keys.F8)) {
+                DarkJetpack.isDebug = !DarkJetpack.isDebug;
+            }
+
             oldMsState = msState;
             oldKbState = kbState;
         }

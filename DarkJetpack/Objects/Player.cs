@@ -1,7 +1,6 @@
 ﻿using System;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using System.Collections.Generic;
 
 namespace DarkJetpack {
     public class Player {
@@ -12,11 +11,12 @@ namespace DarkJetpack {
         private float Rotation;
         private Viewport Viewport;      //Our game viewport
         private float scale;
-        public bool unlocked = false;
         public int highscore;
+        public bool unlocked = false;
         public int score;
         private ParticleMashine pmS, pmF;
-        public int life = 5;
+        public int life = 3;
+        public Rectangle RectangleCollide;
         DarkJetpack game;
         public Rectangle Rectangle {
             get {
@@ -38,43 +38,34 @@ namespace DarkJetpack {
 
         public void setSkin(int skinN) {
             skinNum = skinN;
-            data d = SaveGameStorage.LoadData(skinN);
-
-            unlocked = d.unlocked;
+            SavedData d = SaveGameStorage.LoadData(skinN);
+            unlocked = game.unlocked[skinNum] = d.unlocked;
             highscore = d.highscore;
         }
         public void start() {
             Position = Vector2.Zero;
-            life = 5;
+            life = 3;
             score = 0;
+
         }
         public void Update(GameTime gametime, Vector2 direction, Viewport viewport) {
+            RectangleCollide = new Rectangle(Rectangle.X, Rectangle.Y, Rectangle.Width - Rectangle.Width / 3, Rectangle.Height);
+
             float elapsed = (float)gametime.ElapsedGameTime.TotalSeconds;
             direction.Y = -direction.Y;
 
-            //Store the viewport
             Viewport = viewport;
             scale = ((float)Viewport.Height / 3 / texture.Height);
 
-            //Calculate the distance to move our image, based on speed
             Vector2 distance = direction * Speed * elapsed;
             Position += distance;
             score = Math.Max(score, (int)(Position.Y * 10));
             highscore = Math.Max(highscore, score);
-            /*
-            if (direction.X == 1 && Rotation <= 0.30) {
-                Rotation += 0.03f;
-            } else
-            if (direction.X == -1 && Rotation >= -0.30) {
-                Rotation -= 0.03f;
-            } else if (Math.Abs(Rotation) >= 0.03f && direction.X == 0) {
-                Rotation -= Math.Sign(Rotation) * 0.025f;
-            }
-            */
-            if (score >= skinNum * 5000 * 40 / 56) {
-                game.unlocked[skinNum + 1] = true;
 
+            if (score >= skinNum * 400) {
+                game.unlocked[skinNum + 1] = true;
             }
+
             #region Particle Mashine
             Random r = new Random();
             for (int i = 0; i < pmS.count; i++) {
@@ -120,7 +111,7 @@ namespace DarkJetpack {
             spriteBatch.Draw(texture, null, Rectangle,
                 new Rectangle(400 * skinNum, 0, 400, 800), null, Rotation, null, Color.White);
             if (DarkJetpack.isDebug)
-                spriteBatch.Draw(DarkJetpack.baseTexture, Rectangle, new Color(Color.DarkKhaki, 0.2f));
+                spriteBatch.Draw(DarkJetpack.baseTexture, RectangleCollide, new Color(Color.HotPink, 0.2f));
         }
     }
 }

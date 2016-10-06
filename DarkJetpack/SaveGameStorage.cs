@@ -1,16 +1,13 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using System.IO;
-using Microsoft.Xna.Framework;
 
 namespace DarkJetpack {
-    public struct data {
+    public struct SavedData {
         public bool unlocked;
         public int highscore;
-
-        public data(int highscore, bool unlocked1) : this() {
+        public SavedData(int highscore, bool unlocked) {
             this.highscore = highscore;
-            this.unlocked = unlocked1;
+            this.unlocked = unlocked;
         }
     }
     class SaveGameStorage {
@@ -18,20 +15,20 @@ namespace DarkJetpack {
             string fullpath = "Save" + skin + ".sav";
             FileStream stream = File.Open(fullpath, FileMode.OpenOrCreate);
             try {
-                XmlSerializer serializer = new XmlSerializer(typeof(data));
-                data d = new data(highscore, unlocked);
+                XmlSerializer serializer = new XmlSerializer(typeof(SavedData));
+                SavedData d = new SavedData(highscore, unlocked);
                 serializer.Serialize(stream, d);
             } finally {
                 stream.Close();
             }
         }
-        public static data LoadData(int skin) {
-            data ret;
+        public static SavedData LoadData(int skin) {
+            SavedData ret;
             string fullpath = "Save" + skin + ".sav";
             FileStream stream = File.Open(fullpath, FileMode.OpenOrCreate, FileAccess.Read);
             try {
-                XmlSerializer serializer = new XmlSerializer(typeof(data));
-                ret = (data)serializer.Deserialize(stream);
+                XmlSerializer serializer = new XmlSerializer(typeof(SavedData));
+                ret = (SavedData)serializer.Deserialize(stream);
             } finally {
                 stream.Close();
             }
