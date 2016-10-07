@@ -32,10 +32,7 @@ namespace DarkJetpack {
             graphics.ApplyChanges();
         }
         protected override void LoadContent() {
-            if (!(File.Exists("Save.sav")))
-                SaveGameStorage.SaveData(0);
             spriteBatch = new SpriteBatch(GraphicsDevice);
-
 
             baseTexture = new Texture2D(GraphicsDevice, 1, 1);
             baseTexture.SetData(new Color[] { Color.White });
