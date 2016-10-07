@@ -16,7 +16,7 @@ namespace DarkJetpack {
             score = player.score;
             particleMashine = new ParticleMashine(150, DarkJetpack.baseTexture, null);
             interferenceTexture = new Texture2D(game.GraphicsDevice, 200, 150);
-            SaveGameStorage.SaveData(score, player.skinNum, game.unlocked[player.skinNum]);
+            SaveGameStorage.SaveData(player.highscore);
         }
         public override void onLoad() {
             scoreFont = game.Content.Load<SpriteFont>(@"ScoreFont");

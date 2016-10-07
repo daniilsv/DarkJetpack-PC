@@ -2,33 +2,24 @@
 using System.IO;
 
 namespace DarkJetpack {
-    public struct SavedData {
-        public bool unlocked;
-        public int highscore;
-        public SavedData(int highscore, bool unlocked) {
-            this.highscore = highscore;
-            this.unlocked = unlocked;
-        }
-    }
     class SaveGameStorage {
-        public static void SaveData(int highscore, int skin, bool unlocked) {
-            string fullpath = "Save" + skin + ".sav";
+        public static void SaveData(int highscore) {
+            string fullpath = "Save.djp";
             FileStream stream = File.Open(fullpath, FileMode.OpenOrCreate);
             try {
-                XmlSerializer serializer = new XmlSerializer(typeof(SavedData));
-                SavedData d = new SavedData(highscore, unlocked);
-                serializer.Serialize(stream, d);
+                XmlSerializer serializer = new XmlSerializer(typeof(int));
+                serializer.Serialize(stream, highscore);
             } finally {
                 stream.Close();
             }
         }
-        public static SavedData LoadData(int skin) {
-            SavedData ret;
-            string fullpath = "Save" + skin + ".sav";
+        public static int LoadData() {
+            int ret;
+            string fullpath = "Save.djp";
             FileStream stream = File.Open(fullpath, FileMode.OpenOrCreate, FileAccess.Read);
             try {
-                XmlSerializer serializer = new XmlSerializer(typeof(SavedData));
-                ret = (SavedData)serializer.Deserialize(stream);
+                XmlSerializer serializer = new XmlSerializer(typeof(int));
+                ret = (int)serializer.Deserialize(stream);
             } finally {
                 stream.Close();
             }

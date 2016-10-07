@@ -4,17 +4,16 @@ using Microsoft.Xna.Framework;
 
 namespace DarkJetpack {
     public class Player {
-        private Texture2D texture;      //The image to use
+        private Texture2D texture;
         public Color[] textureData;
-        public Vector2 Position;         //Offset to start drawing our image
-        private Vector2 Speed;           //Speed of movement of our parallax effect
+        public Vector2 Position;
+        private Vector2 Speed;
         private float Rotation;
-        private Viewport Viewport;      //Our game viewport
+        private Viewport Viewport;
         private float scale;
         public int nitro = 520;
         public int bullets = 26;
         public int highscore;
-        public bool unlocked = false;
         public int score;
         private ParticleMashine pmS, pmF;
         public int life = 3;
@@ -36,19 +35,16 @@ namespace DarkJetpack {
             Speed = new Vector2(2, 2);
             pmS = new ParticleMashine(50, Terrain, new Rectangle(365, 321, 64, 64));
             pmF = new ParticleMashine(20, Terrain, new Rectangle(365, 381, 64, 64));
+            highscore = SaveGameStorage.LoadData();
         }
 
         public void setSkin(int skinN) {
             skinNum = skinN;
-            SavedData d = SaveGameStorage.LoadData(skinN);
-            unlocked = game.unlocked[skinNum] = d.unlocked;
-            highscore = d.highscore;
         }
         public void start() {
             Position = Vector2.Zero;
             life = 3;
             score = 0;
-
         }
         public void Update(GameTime gametime, Vector2 direction, Viewport viewport) {
             if (nitro > 520) {
@@ -66,11 +62,7 @@ namespace DarkJetpack {
             Position += distance;
             score = Math.Max(score, (int)(Position.Y * 10));
             highscore = Math.Max(highscore, score);
-
-            if (score >= skinNum * 400) {
-                game.unlocked[skinNum + 1] = true;
-            }
-
+            
             #region Particle Mashine
             Random r = new Random();
             for (int i = 0; i < pmS.count; i++) {

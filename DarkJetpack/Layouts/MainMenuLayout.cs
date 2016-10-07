@@ -37,7 +37,7 @@ namespace DarkJetpack {
             return true;
         }
         private bool startGame() {
-            if (!player.unlocked) return false;
+            if (player.highscore < playerSkinNum * 2857) return false;
             game.changeLayoutTo(new GameLayout(game, playerSkinNum));
             return true;
         }
@@ -203,13 +203,13 @@ namespace DarkJetpack {
             particleMashine5.draw(spriteBatch);
             particleMashine6.draw(spriteBatch);
             particleMashine7.draw(spriteBatch);
-            if (player.unlocked)
+            if (player.highscore >= playerSkinNum * 2857)
                 spriteBatch.Draw(playerTexture, null, new Rectangle(viewport.Width / 2 - viewport.Width / 24 + 5, viewport.Height / 2 - viewport.Height / 8 + dy, viewport.Width / 12, viewport.Height / 4),
                 new Rectangle(playerSkinNum * 400, 0, 400, 800), null, 0, null, Color.White);
             else
                 spriteBatch.Draw(playerTexture, null, new Rectangle(viewport.Width / 2 - viewport.Width / 24 + 5, viewport.Height / 2 - viewport.Height / 8 + dy, viewport.Width / 12, viewport.Height / 4),
                 new Rectangle(playerSkinNum * 400, 0, 400, 800), null, 0, null, Color.Black);
-            spriteBatch.DrawString(DarkJetpack.baseFont, player.highscore + "/" + (playerSkinNum * 5000 * 40 / 70), new Vector2(windowBounds.X / 2 - windowBounds.X / 40, windowBounds.Y / 3 - 20), new Color(255, 134, 26), 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
+            spriteBatch.DrawString(DarkJetpack.baseFont, player.highscore + "/" + playerSkinNum * 2857, new Vector2(windowBounds.X / 2 - windowBounds.X / 40, windowBounds.Y / 3 - 20), new Color(255, 134, 26), 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
             spriteBatch.Draw(interferenceTexture, new Rectangle(b.Left + b.Width / 8 + 7, b.Top + b.Height / 8 + 7, b.Width - 2 * b.Width / 8 - 2, b.Height - 3 * b.Height / 8 - 14), Color.White * 0.2f);
         }
 
