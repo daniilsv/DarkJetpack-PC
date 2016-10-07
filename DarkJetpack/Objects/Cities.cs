@@ -13,7 +13,7 @@ namespace DarkJetpack {
 
         //Calculate Rectangle dimensions, based on offset/viewport/zoom values
         private Rectangle Rectangle {
-            get { return new Rectangle((int)(Offset.X), 0, (int)(Viewport.Width / Zoom), 321); }
+            get { return new Rectangle((int)(Offset.X), 1, (int)(Viewport.Width / Zoom), 321); }
         }
 
         public Cities(Texture2D texture) {

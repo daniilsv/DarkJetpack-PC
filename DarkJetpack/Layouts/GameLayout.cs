@@ -6,9 +6,11 @@ using Microsoft.Xna.Framework.Input;
 
 namespace DarkJetpack {
     public class GameLayout : Layout {
-        double lastTime = 0, lastTime2 = 0, lastTime3 = 0, lastTime4 = 0, lastTime5 = 0;
+        double lastTime = 0, lastTime2 = 0, lastTime3 = 0, lastTime4 = 0, lastTime5 = 0, lastTime6 = 0, lastTime7 = 0;
         List<Background> Backgrounds;
         public Texture2D Terrain;
+        public Texture2D Explosion;
+        public Texture2D Explosion1;
         Cities cities;
         List<Color> colors = new List<Color> { new Color(76, 220, 241), Color.DarkBlue, Color.Gainsboro, Color.CadetBlue, Color.Black };
 
@@ -24,6 +26,8 @@ namespace DarkJetpack {
         public GameLayout(DarkJetpack game, int playerSkinN) : base(game) {
             playerSkinNum = playerSkinN;
             Terrain = game.Terrain;
+            Explosion = game.Explosion;
+            Explosion1 = game.Explosion1;
         }
 
         public override void onLoad() {
@@ -67,20 +71,25 @@ namespace DarkJetpack {
             }
 
             if (kbState.IsKeyDown(Keys.A) || kbState.IsKeyDown(Keys.Left))
-                direction += new Vector2(-1, 0);
+                direction += new Vector2(-2, 0);
             else if (kbState.IsKeyDown(Keys.D) || kbState.IsKeyDown(Keys.Right))
-                direction += new Vector2(1, 0);
+                direction += new Vector2(2, 0);
 
-            if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift))
-                direction *= 3;
+            if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)) {
+                if (player.nitro > 0) {
+                    direction *= 2;
+                    player.nitro -= 1;
+                }
+            }
 
             player.Update(gameTime, direction, viewport);
 
-            if (msState.LeftButton == ButtonState.Pressed && gameTime.TotalGameTime.TotalMilliseconds - lastTime4 > 500) {
+            if (msState.LeftButton == ButtonState.Pressed && gameTime.TotalGameTime.TotalMilliseconds - lastTime4 > 500 && player.bullets > 0) {
                 Point p = msState.Position;
                 Vector2 v = new Vector2(p.X - windowBounds.X / 2, windowBounds.Y / 2 - p.Y) + 5 * direction;
                 v.Normalize();
                 enemies.Add(new Bullet(this, v));
+                player.bullets -= 1;
                 lastTime4 = gameTime.TotalGameTime.TotalMilliseconds;
             }
 
@@ -131,7 +140,7 @@ namespace DarkJetpack {
             #region Intersection
             for (int i = 0; i < enemies.Count - 1; i++) {
                 Enemy enm1 = enemies[i];
-                if (enm1.rectDraw.Top > viewport.Height * 2 && i >= 0) {
+                if (enm1.rectDraw.Top > viewport.Height * 5 && i >= 0) {
                     enemies.RemoveAt(i);
                     i--; continue;
                 }
@@ -167,32 +176,45 @@ namespace DarkJetpack {
             #region Adding
             Random r = new Random();
 
-            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime2 > 15000) {
+            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime2 > 50000) {
                 if (player.life < 5)
                     enemies.Add(new LifePoint(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
                 lastTime2 = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime6 > 35000) {
+                enemies.Add(new SpeedBoost(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
+                lastTime6 = gameTime.TotalGameTime.TotalMilliseconds;
+            }
+            if (gameTime.TotalGameTime.TotalMilliseconds - lastTime7 > 10000) {
+                enemies.Add(new Ammo(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
+                lastTime7 = gameTime.TotalGameTime.TotalMilliseconds;
             }
             if (gameTime.TotalGameTime.TotalMilliseconds - lastTime > 750 + 2000 * r.NextDouble()) {
                 for (int i = 0; i < 1 + 3 * r.NextDouble(); i++)
                     enemies.Add(new Asteroid(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
                 lastTime = gameTime.TotalGameTime.TotalMilliseconds;
             }
-            if (player.score > 750)
-                if (gameTime.TotalGameTime.TotalMilliseconds - lastTime3 > 1500 + 3000 * r.NextDouble()) {
-                    for (int i = 0; i < 2; i++)
+            if (player.score > 400)
+                if (gameTime.TotalGameTime.TotalMilliseconds - lastTime3 > 5000 - player.Position.Y * 5 + 10000 * r.NextDouble()) {
+                    int num = 1 + ((int)player.Position.Y + (int)(r.NextDouble() * 200)) / 100;
+                    for (int i = 0; i < num; i++)
                         enemies.Add(new MonsterMini(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
                     lastTime3 = gameTime.TotalGameTime.TotalMilliseconds;
                 }
             if (player.score > 900)
-                if (gameTime.TotalGameTime.TotalMilliseconds - lastTime5 > 1250 + 3500 * r.NextDouble()) {
-                    enemies.Add(new MonsterBig(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
-                lastTime5 = gameTime.TotalGameTime.TotalMilliseconds;
-            }
+                if (gameTime.TotalGameTime.TotalMilliseconds - lastTime5 > 12500 - player.Position.Y * 5 + 3500 * r.NextDouble()) {
+                    int num = 1 + ((int)player.Position.Y + (int)(r.NextDouble() * 400)) / 200;
+                    for (int i = 0; i < num; i++)
+                        enemies.Add(new MonsterBig(this, new Vector2(player.Position.X - windowBounds.X / 120 + (float)(windowBounds.X / 60 * r.NextDouble()), player.Position.Y + windowBounds.Y / 100)));
+                    lastTime5 = gameTime.TotalGameTime.TotalMilliseconds;
+                }
             enemies.AddRange(postEnemiesAdd);
             postEnemiesAdd = new List<Enemy>();
             if (player.score >= bossLevel * 1100) {
                 bossLevel++;
-                enemies.Add(new BigBoss(this, new Vector2(player.Position.X, player.Position.Y + windowBounds.Y / 100)));
+                BigBoss boss = new BigBoss(this, new Vector2(player.Position.X, player.Position.Y + windowBounds.Y / 100));
+                boss.life = 6 + bossLevel;
+                enemies.Add(boss);
             }
             #endregion
 
@@ -217,7 +239,12 @@ namespace DarkJetpack {
             for (int i = 0; i < player.life; i++)
                 spriteBatch.Draw(Terrain, new Vector2(50 + 50 * i, 50), null, new Rectangle(625, 376, 51, 46),
                     Vector2.Zero, 0, new Vector2(0.8f));
-
+            spriteBatch.Draw(Terrain, new Vector2(90, 132), null, new Rectangle(1458, 321, (int)(player.bullets * 28f) / 10, 32),
+                    Vector2.Zero, 0);
+            spriteBatch.DrawString(DarkJetpack.baseFont, "Ammo: " + player.bullets, new Vector2(75, 192), Color.White * ((player.bullets * 0.05f)));
+            spriteBatch.Draw(Terrain, new Vector2(90, 252), null, new Rectangle(1405, 321, player.nitro / 10, 52),
+                    Vector2.Zero, 0);
+            spriteBatch.DrawString(DarkJetpack.baseFont, "Press SHIFT", new Vector2(65, 322), Color.White * ((player.nitro / 5.2f) * 0.01f));
             #region Score
             if (player.score < player.highscore) {
                 spriteBatch.DrawString(DarkJetpack.baseFont, player.score + "", new Vector2(windowBounds.X / 2 - 30, 50),

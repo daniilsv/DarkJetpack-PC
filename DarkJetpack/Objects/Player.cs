@@ -11,6 +11,8 @@ namespace DarkJetpack {
         private float Rotation;
         private Viewport Viewport;      //Our game viewport
         private float scale;
+        public int nitro = 520;
+        public int bullets = 26;
         public int highscore;
         public bool unlocked = false;
         public int score;
@@ -49,6 +51,9 @@ namespace DarkJetpack {
 
         }
         public void Update(GameTime gametime, Vector2 direction, Viewport viewport) {
+            if (nitro > 520) {
+                nitro = 520;
+            }
             RectangleCollide = new Rectangle(Rectangle.X, Rectangle.Y, Rectangle.Width - Rectangle.Width / 3, Rectangle.Height);
 
             float elapsed = (float)gametime.ElapsedGameTime.TotalSeconds;

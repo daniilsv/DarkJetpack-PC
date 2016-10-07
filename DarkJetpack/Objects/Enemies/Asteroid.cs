@@ -26,8 +26,10 @@ namespace DarkJetpack {
             type = 0;
         }
         public override void intersects(Enemy enemy) {
+            if (enemy is Bullet) {
+                enemy.type = 0;
+            }
             type = 0;
-            enemy.type = 0;
         }
 
         public override void update(GameTime gameTime) {

@@ -9,6 +9,7 @@ namespace DarkJetpack {
         protected static Random r = new Random();
         protected GameLayout game;
         protected Texture2D texture;
+        protected Texture2D explosion;
         public int type = 1;
         protected Vector2 position = Vector2.Zero;
         protected Vector2 speed = Vector2.Zero;

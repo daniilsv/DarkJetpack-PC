@@ -18,10 +18,7 @@ namespace DarkJetpack {
         }
 
         public override void intersects(Enemy enemy) {
-            if (enemy is LifePoint || enemy is Bullet)
-                return;
-            type = 0;
-            enemy.type = 0;
+            this.type = 0;
         }
 
         public override void update(GameTime gameTime) {

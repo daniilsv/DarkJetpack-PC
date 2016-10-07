@@ -17,6 +17,8 @@ namespace DarkJetpack {
         protected Song[] song = new Song[15];
         private int nextSong = 0;
         public Texture2D Terrain;
+        public Texture2D Explosion;
+        public Texture2D Explosion1;
         public static bool isDebug = false;
         public static SpriteFont baseFont;
         public DarkJetpack() : base() {
@@ -32,10 +34,13 @@ namespace DarkJetpack {
         }
         protected override void LoadContent() {
             for (int i = 0; i < 7; i++) {
-                if (!(File.Exists("Save" + i + ".sav")) && i != 0)
-                    SaveGameStorage.SaveData(0, i, false);
-                else if (i == 0)
-                    SaveGameStorage.SaveData(0, i, true);
+                if (!(File.Exists("Save" + i + ".sav"))) {
+                    if (i != 0) {
+                        SaveGameStorage.SaveData(0, i, false);
+                    } else {
+                        SaveGameStorage.SaveData(0, i, true);
+                    }
+                }
             }
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -43,9 +48,10 @@ namespace DarkJetpack {
             baseTexture = new Texture2D(GraphicsDevice, 1, 1);
             baseTexture.SetData(new Color[] { Color.White });
             Terrain = Content.Load<Texture2D>(@"Terrain");
+            Explosion = Content.Load<Texture2D>(@"Explosion1");
+            Explosion1 = Content.Load<Texture2D>(@"Explosion2");
 
             #region LoadMusic
-            /*
             song[0] = Content.Load<Song>(@"music/01. Epsilon");
             song[1] = Content.Load<Song>(@"music/02. Game Not Over");
             song[2] = Content.Load<Song>(@"music/03. Dead Space");
@@ -61,7 +67,6 @@ namespace DarkJetpack {
             song[12] = Content.Load<Song>(@"music/13. Optimistic (Instrumental)");
             song[13] = Content.Load<Song>(@"music/14. Rain Of That Day (Elzevir Cover)");
             song[14] = Content.Load<Song>(@"music/15. Dark Energy (Instrumental)");
-            */
             #endregion
 
             changeLayoutTo(new MainMenuLayout(this));
@@ -79,7 +84,6 @@ namespace DarkJetpack {
             curLayout.onUpdate(gameTime, GraphicsDevice.Viewport);
 
             #region Music
-            /*
             if (MediaPlayer.State != MediaState.Playing) {
                 if (nextSong == 0) {
                     Random rnd = new Random();
@@ -89,7 +93,6 @@ namespace DarkJetpack {
                     nextSong = 0;
                 }
             }
-            */
             #endregion
 
             base.Update(gameTime);
