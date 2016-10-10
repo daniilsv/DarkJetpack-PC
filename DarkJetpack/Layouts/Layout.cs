@@ -34,6 +34,7 @@ namespace DarkJetpack {
             update(gameTime);
 
             Point mousePosition = new Point(msState.X, msState.Y);
+            game.mousePos = mousePosition;
             #region Buttons
             foreach (Button b in buttons) {
                 if (b.b.Contains(mousePosition.X, mousePosition.Y)) {

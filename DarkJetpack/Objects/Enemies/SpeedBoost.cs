@@ -18,7 +18,7 @@ namespace DarkJetpack {
         }
 
         public override void intersects(Player player) {
-            player.nitro = 520;
+            player.nitro[player.skinNum] = 520+(52*player.skinNum);
             type = 0;
         }
         public override void intersects(Enemy enemy) {

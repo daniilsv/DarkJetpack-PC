@@ -11,6 +11,7 @@ namespace DarkJetpack {
         SpriteBatch spriteBatch;
         public static Texture2D baseTexture;
         Layout curLayout;
+        public Point mousePos;
         public Color backColor;
         Stack<Layout> layoutBackStack;
         protected Song[] song = new Song[15];
@@ -32,7 +33,7 @@ namespace DarkJetpack {
             graphics.ApplyChanges();
         }
         protected override void LoadContent() {
-            if (!(File.Exists("Save.sav")))
+            if (!(File.Exists("Save.djp")))
                 SaveGameStorage.SaveData(0);
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
@@ -42,7 +43,6 @@ namespace DarkJetpack {
             Terrain = Content.Load<Texture2D>(@"Terrain");
             Explosion = Content.Load<Texture2D>(@"Explosion1");
             Explosion1 = Content.Load<Texture2D>(@"Explosion2");
-            /*
             #region LoadMusic
             song[0] = Content.Load<Song>(@"music/01. Epsilon");
             song[1] = Content.Load<Song>(@"music/02. Game Not Over");
@@ -60,13 +60,11 @@ namespace DarkJetpack {
             song[13] = Content.Load<Song>(@"music/14. Rain Of That Day (Elzevir Cover)");
             song[14] = Content.Load<Song>(@"music/15. Dark Energy (Instrumental)");
             #endregion
-            */
             changeLayoutTo(new MainMenuLayout(this));
 
             backColor = new Color(76, 220, 241);
             baseFont = Content.Load<SpriteFont>(@"ScoreFont");
         }
-
         protected override void UnloadContent() {
             curLayout.onUnLoad();
             Content.Unload();
@@ -74,7 +72,6 @@ namespace DarkJetpack {
 
         protected override void Update(GameTime gameTime) {
             curLayout.onUpdate(gameTime, GraphicsDevice.Viewport);
-            /*
             #region Music
             if (MediaPlayer.State != MediaState.Playing) {
                 if (nextSong == 0) {
@@ -86,7 +83,6 @@ namespace DarkJetpack {
                 }
             }
             #endregion
-            */
             base.Update(gameTime);
         }
 

@@ -13,7 +13,7 @@ namespace DarkJetpack {
         public Texture2D Explosion1;
         Cities cities;
         List<Color> colors = new List<Color> { new Color(76, 220, 241), Color.DarkBlue, Color.Gainsboro, Color.CadetBlue, Color.Black };
-
+        float[] magicNumbers = { 0.05f, 0.04f, 0.035f, 0.03f, 0.025f, 0.022f, 0.017f };
         List<List<Texture2D>> backTexs;
 
         List<Enemy> enemies;
@@ -76,20 +76,20 @@ namespace DarkJetpack {
                 direction += new Vector2(2, 0);
 
             if (kbState.IsKeyDown(Keys.LeftShift) || kbState.IsKeyDown(Keys.RightShift)) {
-                if (player.nitro > 0) {
+                if (player.nitro[playerSkinNum] > 0) {
                     direction *= 2;
-                    player.nitro -= 1;
+                    player.nitro[playerSkinNum] -= 1;
                 }
             }
 
             player.Update(gameTime, direction, viewport);
 
-            if (msState.LeftButton == ButtonState.Pressed && gameTime.TotalGameTime.TotalMilliseconds - lastTime4 > 500 && player.bullets > 0) {
+            if (msState.LeftButton == ButtonState.Pressed && gameTime.TotalGameTime.TotalMilliseconds - lastTime4 > 500 && player.bullets[playerSkinNum] > 0) {
                 Point p = msState.Position;
                 Vector2 v = new Vector2(p.X - windowBounds.X / 2, windowBounds.Y / 2 - p.Y) + 5 * direction;
                 v.Normalize();
                 enemies.Add(new Bullet(this, v));
-                player.bullets -= 1;
+                player.bullets[playerSkinNum] -= 1;
                 lastTime4 = gameTime.TotalGameTime.TotalMilliseconds;
             }
 
@@ -239,12 +239,12 @@ namespace DarkJetpack {
             for (int i = 0; i < player.life; i++)
                 spriteBatch.Draw(Terrain, new Vector2(50 + 50 * i, 50), null, new Rectangle(625, 376, 51, 46),
                     Vector2.Zero, 0, new Vector2(0.8f));
-            spriteBatch.Draw(Terrain, new Vector2(90, 132), null, new Rectangle(1458, 321, (int)(player.bullets * 28f) / 10, 32),
+            spriteBatch.Draw(Terrain, new Vector2(90, 132), null, new Rectangle(1458, 321, (int)((player.bullets[playerSkinNum] * magicNumbers[playerSkinNum]) * 67), 32),
                     Vector2.Zero, 0);
-            spriteBatch.DrawString(DarkJetpack.baseFont, "Ammo: " + player.bullets, new Vector2(75, 192), Color.White * ((player.bullets * 0.05f)));
-            spriteBatch.Draw(Terrain, new Vector2(90, 252), null, new Rectangle(1405, 321, player.nitro / 10, 52),
+            spriteBatch.DrawString(DarkJetpack.baseFont, "Ammo: " + player.bullets[playerSkinNum], new Vector2(75, 192), Color.White * ((player.bullets[playerSkinNum] * magicNumbers[playerSkinNum])));
+            spriteBatch.Draw(Terrain, new Vector2(90, 252), null, new Rectangle(1405, 321, player.nitro[playerSkinNum] / (10 + playerSkinNum), 52),
                     Vector2.Zero, 0);
-            spriteBatch.DrawString(DarkJetpack.baseFont, "Press SHIFT", new Vector2(65, 322), Color.White * ((player.nitro / 5.2f) * 0.01f));
+            spriteBatch.DrawString(DarkJetpack.baseFont, "Press SHIFT", new Vector2(65, 322), Color.White * ((player.nitro[playerSkinNum] / (5.2f + (0.52f * playerSkinNum))) * 0.01f));
             #region Score
             if (player.score < player.highscore) {
                 spriteBatch.DrawString(DarkJetpack.baseFont, player.score + "", new Vector2(windowBounds.X / 2 - 30, 50),
