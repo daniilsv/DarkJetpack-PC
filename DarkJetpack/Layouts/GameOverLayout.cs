@@ -77,7 +77,7 @@ namespace DarkJetpack {
             foreach (Button b in buttons)
                 b.onDraw(spriteBatch, gameTime);
 
-            spriteBatch.DrawString(scoreFont, score + "", new Vector2(windowBounds.X / 2 - 70, 300), Color.MonoGameOrange, 0, Vector2.Zero, 1.75f, SpriteEffects.None, 1);
+            spriteBatch.DrawString(scoreFont, "Score: " + score, new Vector2(windowBounds.X / 2 - 80, 300), Color.MonoGameOrange, 0, Vector2.Zero, 1.75f, SpriteEffects.None, 1);
             spriteBatch.DrawString(DarkJetpack.baseFont, "Retry", new Vector2(windowBounds.X / 2 - 39, windowBounds.Y - 182), Color.Black, 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
             spriteBatch.DrawString(DarkJetpack.baseFont, "Retry", new Vector2(windowBounds.X / 2 - 41, windowBounds.Y - 184), Color.Black, 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);
             spriteBatch.DrawString(DarkJetpack.baseFont, "Retry", new Vector2(windowBounds.X / 2 - 40, windowBounds.Y - 183), new Color(255, 134, 26), 0, Vector2.Zero, 1.4f, SpriteEffects.None, 1);

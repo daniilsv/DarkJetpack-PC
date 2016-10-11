@@ -134,7 +134,7 @@ namespace DarkJetpack {
                 //Center
                 spriteBatch.Draw(t, null, new Rectangle(b.Left + 29, b.Top + 28, b.Height - 3 * 25, 29), new Rectangle(581, 321, 1, 29), new Vector2(1, 29), -MathHelper.PiOver2, null, Color.White);
                 spriteBatch.Draw(DarkJetpack.baseTexture, new Rectangle(b.Left + 29, b.Top + 29, b.Width - 2 * 29, b.Height - 2 * 29), new Color(149, 163, 85));
-                spriteBatch.Draw(t, null, new Rectangle(b.Left + b.Width, b.Top + 29, b.Height - 3 * 25, 29), new Rectangle(581, 321, 1, 29), new Vector2(0, 0), MathHelper.PiOver2, null, Color.White);
+                spriteBatch.Draw(t, null, new Rectangle(b.Left + b.Width, b.Top + 28, b.Height - 3 * 25, 29), new Rectangle(581, 321, 1, 29), new Vector2(0, 0), MathHelper.PiOver2, null, Color.White);
 
                 //Bottom
                 spriteBatch.Draw(t, new Vector2(b.Left, b.Top + b.Height - 29), null, new Rectangle(552, 321, 29, 29), Vector2.Zero, -MathHelper.PiOver2, null, Color.White);

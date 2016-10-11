@@ -245,6 +245,8 @@ namespace DarkJetpack {
             spriteBatch.Draw(Terrain, new Vector2(90, 252), null, new Rectangle(1405, 321, player.nitro[playerSkinNum] / (10 + playerSkinNum), 52),
                     Vector2.Zero, 0);
             spriteBatch.DrawString(DarkJetpack.baseFont, "Press SHIFT", new Vector2(65, 322), Color.White * ((player.nitro[playerSkinNum] / (5.2f + (0.52f * playerSkinNum))) * 0.01f));
+
+            spriteBatch.DrawString(DarkJetpack.baseFont, "Press ESC to pause", new Vector2(windowBounds.X - 200, 52), Color.MonoGameOrange, 0, Vector2.Zero, 1f, SpriteEffects.None, 1);
             #region Score
             if (player.score < player.highscore) {
                 spriteBatch.DrawString(DarkJetpack.baseFont, player.score + "", new Vector2(windowBounds.X / 2 - 30, 50),
@@ -259,9 +261,7 @@ namespace DarkJetpack {
 
             #region Pause
             if (isPause) {
-                testw.onDraw(spriteBatch, gameTime);
-                foreach (Button b in buttons)
-                    b.onDraw(spriteBatch, gameTime);
+                spriteBatch.DrawString(DarkJetpack.baseFont, "PAUSED", new Vector2(windowBounds.X / 2 - 80, 300), Color.MonoGameOrange, 0, Vector2.Zero, 1.75f, SpriteEffects.None, 1);
             }
             #endregion
 
